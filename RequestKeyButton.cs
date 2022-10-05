@@ -9,7 +9,11 @@ public class RequestKeyButton : MonoBehaviour
 {
     [SerializeField] Text txtThisRoom;
     [SerializeField] Dropdown dpdStartTime;
+    [SerializeField] InputField inputStartHour;
+    [SerializeField] InputField inputStartMin;
     [SerializeField] Dropdown dpdEndTime;
+    [SerializeField] InputField inputEndHour;
+    [SerializeField] InputField inputEndMin;
     [SerializeField] InputField inputDay;
     [SerializeField] Dropdown dpdMonth;
     [SerializeField] Button btnRequestKey;
@@ -28,7 +32,7 @@ public class RequestKeyButton : MonoBehaviour
         ABRIL, JUNHO, SETEMBRO, NOVEMBRO
     }
 
-    private string DateDay()
+    private string VerifyInputDay()
     {
         string sTimeYear = DateTime.UtcNow.ToLocalTime().ToString("yyyy");
 
@@ -60,25 +64,100 @@ public class RequestKeyButton : MonoBehaviour
         return sTimeYear + "-" + sTimeMonth + "-" + sTimeDay;
     }
 
+    private string VerifyInputHour(string STime)
+    {
+        if(STime != "")
+        {
+            int iTime;
+            Int32.TryParse(STime, out iTime);
+            if(iTime > 24 | iTime < 0) return null;
+            else
+            {
+                if(iTime < 10) STime = "0" + STime;
+            }
+            return STime;
+        }
+        else return null;
+    }
+    
+    private string VerifyInputMin(string STime)
+    {
+        if(STime != "")
+        {
+            int iTime;
+            Int32.TryParse(STime, out iTime);
+            if(iTime > 60 | iTime < 0) return null;
+            else
+            {
+                if(iTime < 10) STime = "0" + STime;
+            }
+            return STime;
+        }
+        else return "00";
+    }
+
     private string TimeStart()
     {
-        string sTimeStart = dpdStartTime.options[dpdStartTime.value].text;
-        sTimeStart = sTimeStart == "AGORA" ? DateTime.UtcNow.ToLocalTime().ToString("HH:mm:ss") : sTimeStart + ":00";
+        string sTimeStart = "";
+        if(dpdStartTime.gameObject.activeInHierarchy)
+        {
+            sTimeStart = dpdStartTime.options[dpdStartTime.value].text;
+            sTimeStart = sTimeStart == "AGORA" ? DateTime.UtcNow.ToLocalTime().ToString("HH:mm:ss") : sTimeStart + ":00";
+        }
+        else
+        {
+            string sStartHour = VerifyInputHour(inputStartHour.text);
+            if(sStartHour is null) return null;
+            string sStartMin = VerifyInputMin(inputStartMin.text);
+            if(sStartMin is null) return null;
+            sTimeStart = sStartHour + ":" + sStartMin + ":00";
+        }
         return sTimeStart;
+    }
+
+    private string TimeEnd()
+    {
+        string sTimeEnd = "";
+        if(dpdEndTime.gameObject.activeInHierarchy)
+        {
+            sTimeEnd = dpdEndTime.options[dpdEndTime.value].text + ":00";
+        }
+        else
+        {
+            string sEndHour = VerifyInputHour(inputEndHour.text);
+            if(sEndHour is null) return null;
+            string sEndMin = VerifyInputMin(inputEndMin.text);
+            if(sEndMin is null) return null;
+            sTimeEnd = sEndHour + ":" + sEndMin + ":00";
+        }
+        return sTimeEnd;
     }
 
     public void RequestKey()
     {
         Utilities.StartRequest(new Button[] {btnRequestKey}, txtMsg, "Carregando", panelMsg);
 
-        string sDateDay = DateDay();
+        string sTimeStart = TimeStart();
+        if(sTimeStart is null)
+        {
+            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: horário inválido");
+            return;
+        }
+
+        string sTimeEnd = TimeEnd();
+        if(sTimeEnd is null)
+        {
+            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: horário inválido");
+            return;
+        }
+
+        string sDateDay = VerifyInputDay();
         if(sDateDay is null)
         {
             Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: dia inválido");
             return;
         }
-        string sTimeStart = TimeStart();
-        string sTimeEnd = dpdEndTime.options[dpdEndTime.value].text + ":00";
+
         string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
 
         StartCoroutine(GetRequestKey(sKey, sDateDay, sTimeStart, sTimeEnd));
