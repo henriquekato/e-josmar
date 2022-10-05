@@ -55,7 +55,7 @@ public class AuthButton : MonoBehaviour
                     StartCoroutine(GetLoadUserKeys());
                     break;
                 default:
-                    Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, jsonAuth.code);
+                    Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro inesperado: " + jsonAuth.code);
                     break;
             }
         }
@@ -74,14 +74,21 @@ public class AuthButton : MonoBehaviour
         {
             jsonLoadUserKeys = JsonUtility.FromJson<RequestListJson>(requestLoadUserKeys.downloadHandler.text);
             
-            if(jsonLoadUserKeys.count > 0)
+            if(jsonLoadUserKeys.code == "request_list")
             {
-                foreach(var request in jsonLoadUserKeys.list)
+                if(jsonLoadUserKeys.count > 0)
                 {
-                    User.user.UserKeys.Add(new Key(request.key, request.id, request.date_expected_start, request.date_expected_end, request.status));
+                    foreach(var request in jsonLoadUserKeys.list)
+                    {
+                        User.user.UserKeys.Add(new Key(request.key, request.id, request.date_expected_start, request.date_expected_end, request.status));
+                    }
                 }
+                SceneManager.LoadScene("scene-keys");
             }
-            SceneManager.LoadScene("scene-keys");
+            else
+            {
+                Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro inesperado: " + jsonLoadUserKeys.code);
+            }
         }
     }
 }

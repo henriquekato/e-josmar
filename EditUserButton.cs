@@ -46,9 +46,6 @@ public class EditUserButton : MonoBehaviour
 
             switch(jsonEditUser.code)
             {
-                case "user_not_found":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: usuário não encontrado");
-                    break;
                 case "user_name_in_use":
                     Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: nome de usuário já em uso");
                     break;
@@ -77,7 +74,7 @@ public class EditUserButton : MonoBehaviour
                     inputPassword.text = "";
                     break;
                 default:
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, jsonEditUser.code);
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro inesperado: " + jsonEditUser.code);
                     break;
             }
         }
