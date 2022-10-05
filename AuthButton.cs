@@ -21,7 +21,7 @@ public class AuthButton : MonoBehaviour
 
     public void Auth()
     {
-        Utilities.apiURL = "https://80-mocno-serverjosmar-" + inputurl.text + ".gitpod.io";       //erro
+        Utilities.apiURL = "https://80-mocno-serverjosmar-" + inputurl.text + ".gitpod.io";    //erro
 
         Utilities.StartRequest(new Button[] {btnLogin}, txtMsg, "Carregando", panelMsg);
         StartCoroutine(GetAuth());
@@ -63,9 +63,7 @@ public class AuthButton : MonoBehaviour
 
     IEnumerator GetLoadUserKeys()
     {
-        UnityWebRequest requestLoadUserKeys = UnityWebRequest.Get(Utilities.apiURL + "/api/request/list?user=" + User.user.UserId + "&status=" + ((int)Utilities.Status.not_started).ToString() + "|" + ((int)Utilities.Status.started).ToString() + "&token=" + User.user.UserToken);
-        // "&date_start=" + System.DateTime.UtcNow.ToLocalTime().ToString("yyyy-MM-dd") + " 00:00:00"
-        // "&date_end=" + System.DateTime.UtcNow.ToLocalTime().ToString("yyyy") + "-12-31 23:59:59"
+        UnityWebRequest requestLoadUserKeys = UnityWebRequest.Get(Utilities.apiURL + "/api/request/list?user=" + User.user.UserId + "&status=" + ((int)Utilities.Status.not_started).ToString() + "|" + ((int)Utilities.Status.started).ToString() + "&date_start=" + DateTime.UtcNow.ToLocalTime().ToString("yyyy-MM-dd") + " 00:00:00" + "&date_end=" + DateTime.UtcNow.ToLocalTime().ToString("yyyy") + "-12-31 23:59:59" + "&token=" + User.user.UserToken);
         yield return requestLoadUserKeys.SendWebRequest();
 
         if(requestLoadUserKeys.result == UnityWebRequest.Result.ConnectionError | requestLoadUserKeys.result == UnityWebRequest.Result.ProtocolError)
