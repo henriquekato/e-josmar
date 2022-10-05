@@ -17,9 +17,9 @@ public class OnPanelActive : MonoBehaviour
     {
         Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações");
 
-        string sKey = txtThisRoom.text.Substring(6);
+        string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
 
-        string sDate = System.DateTime.UtcNow.ToLocalTime().ToString("yyyy-MM-dd") + " " + System.DateTime.UtcNow.ToLocalTime().ToString("HH:mm:ss");
+        string sDate = DateTime.UtcNow.ToLocalTime().ToString("yyyy-MM-dd") + " " + DateTime.UtcNow.ToLocalTime().ToString("HH:mm:ss");
 
         StartCoroutine(GetKeyStatus(sKey, sDate));
     }
@@ -37,13 +37,20 @@ public class OnPanelActive : MonoBehaviour
         {
             jsonRequestList = JsonUtility.FromJson<RequestListJson>(requestRequestList.downloadHandler.text);
 
-            if(jsonRequestList.count > 0)
+            if(jsonRequestList.code == "request_list")
             {
-                Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Sala ocupada por: " + jsonRequestList.list[0].user_name + ", até " + jsonRequestList.list[0].date_expected_end.Substring(11));
+                if(jsonRequestList.count > 0)
+                {
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Sala ocupada por: " + jsonRequestList.list[0].user_name + ", até " + jsonRequestList.list[0].date_expected_end.Substring(11));
+                }
+                else
+                {
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Sala desocupada");
+                }
             }
             else
             {
-                Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Sala desocupada");
+                Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Erro inesperado: " + jsonRequestList.code);
             }
         }
     }

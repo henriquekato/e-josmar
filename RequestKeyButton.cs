@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 public class RequestKeyButton : MonoBehaviour
 {
-    [SerializeField] Text txtRoom;
+    [SerializeField] Text txtThisRoom;
     [SerializeField] Dropdown dpdStartTime;
     [SerializeField] Dropdown dpdEndTime;
     [SerializeField] InputField inputDay;
@@ -30,7 +30,7 @@ public class RequestKeyButton : MonoBehaviour
 
     private string DateDay()
     {
-        string sTimeYear = System.DateTime.UtcNow.ToLocalTime().ToString("yyyy");
+        string sTimeYear = DateTime.UtcNow.ToLocalTime().ToString("yyyy");
 
         string sTimeMonth = dpdMonth.value + 1 < 10 ? "0" + (dpdMonth.value + 1).ToString() : (dpdMonth.value + 1).ToString();
 
@@ -63,7 +63,7 @@ public class RequestKeyButton : MonoBehaviour
     private string TimeStart()
     {
         string sTimeStart = dpdStartTime.options[dpdStartTime.value].text;
-        sTimeStart = sTimeStart == "AGORA" ? System.DateTime.UtcNow.ToLocalTime().ToString("HH:mm:ss") : sTimeStart + ":00";
+        sTimeStart = sTimeStart == "AGORA" ? DateTime.UtcNow.ToLocalTime().ToString("HH:mm:ss") : sTimeStart + ":00";
         return sTimeStart;
     }
 
@@ -79,14 +79,14 @@ public class RequestKeyButton : MonoBehaviour
         }
         string sTimeStart = TimeStart();
         string sTimeEnd = dpdEndTime.options[dpdEndTime.value].text + ":00";
-        string sKey = txtRoom.text.Substring(6);
+        string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
 
         StartCoroutine(GetRequestKey(sKey, sDateDay, sTimeStart, sTimeEnd));
     }
 
-    IEnumerator GetRequestKey(string sKey, string sDateDay, string sTimeStart, string sTimeEnd)
+    IEnumerator GetRequestKey(string SKey, string SDateDay, string STimeStart, string STimeEnd)
     {
-        UnityWebRequest requestRequestCreate = UnityWebRequest.Get(Utilities.apiURL + "/api/request/create?user=" + User.user.UserId + "&key=" + sKey + "&date_start=" + sDateDay + " " + sTimeStart + "&date_end=" + sDateDay + " " + sTimeEnd + "&token=" + User.user.UserToken);
+        UnityWebRequest requestRequestCreate = UnityWebRequest.Get(Utilities.apiURL + "/api/request/create?user=" + User.user.UserId + "&key=" + SKey + "&date_start=" + SDateDay + " " + STimeStart + "&date_end=" + SDateDay + " " + STimeEnd + "&token=" + User.user.UserToken);
         yield return requestRequestCreate.SendWebRequest();
 
         if(requestRequestCreate.result == UnityWebRequest.Result.ConnectionError | requestRequestCreate.result == UnityWebRequest.Result.ProtocolError)
@@ -99,9 +99,6 @@ public class RequestKeyButton : MonoBehaviour
 
             switch(jsonRequestCreate.code)
             {
-                case "request_user_not_found":
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: usuário não encontrado");
-                    break;
                 case "request_date_end_before_start":
                 case "request_date_end_before_now":
                     Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: data inválida");
@@ -114,8 +111,9 @@ public class RequestKeyButton : MonoBehaviour
                     break;
                 case "request_created":
                     int iRoomNumber;
-                    Int32.TryParse(txtRoom.text.Substring(6), out iRoomNumber);
-                    User.user.UserKeys.Add(new Key(iRoomNumber, jsonRequestCreate.id, sDateDay + " " + sTimeStart, sDateDay + " " + sTimeEnd, (int)Utilities.Status.not_started));
+                    int iNumberPos = txtThisRoom.text.Substring(0, 1) == "S" ? 6 : 13;
+                    Int32.TryParse(txtThisRoom.text.Substring(iNumberPos), out iRoomNumber);
+                    User.user.UserKeys.Add(new Key(iRoomNumber, jsonRequestCreate.id, SDateDay + " " + STimeStart, SDateDay + " " + STimeEnd, (int)Utilities.Status.not_started));
 
                     dpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + jsonRequestCreate.id.ToString()));
                     dpdRequestsList.RefreshShownValue();
@@ -123,7 +121,7 @@ public class RequestKeyButton : MonoBehaviour
                     Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Pedido " + jsonRequestCreate.id + " feito com sucesso");
                     break;
                 default:
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, jsonRequestCreate.code);
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro inesperado: " + jsonRequestCreate.code);
                     break;
             }
         }

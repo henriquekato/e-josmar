@@ -41,7 +41,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         
         // if(TimeOk(key))
         // {
-            StartCoroutine(PostUpdateKeyStatus(key, Utilities.Status.started.ToString()));
+            StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.started));
         // }
         // else
         // {
@@ -50,25 +50,39 @@ public class UpdateKeyStatusButton : MonoBehaviour
         // }
     }
 
-    public void UpdateKeyStatusToCancel()
-    {
-        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando", panelMsg);
-        Key key = Utilities.WhichRequest(dpdRequestsList);
-        StartCoroutine(PostUpdateKeyStatus(key, Utilities.Status.canceled.ToString()));
-    }
-
     public void UpdateKeyStatusToEnded()
     {
         Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando", panelMsg);
         Key key = Utilities.WhichRequest(dpdRequestsList);
-        StartCoroutine(PostUpdateKeyStatus(key, Utilities.Status.ended.ToString()));
+        StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.ended));
     }
 
-    IEnumerator PostUpdateKeyStatus(Key key, string Status)
+    public void UpdateKeyStatusToCancel()
     {
+        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando", panelMsg);
+        Key key = Utilities.WhichRequest(dpdRequestsList);
+        StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.canceled));
+    }
+
+    IEnumerator PostUpdateKeyStatus(Key key, int IStatus)
+    {
+        string sStatus = "";
+        switch(IStatus)
+        {
+            case (int)Utilities.Status.started:
+                sStatus = "started";
+                break;
+            case (int)Utilities.Status.ended:
+                sStatus = "ended";
+                break;
+            case (int)Utilities.Status.canceled:
+                sStatus = "canceled";
+                break;
+        }
+
         WWWForm form = new WWWForm();
         form.AddField("id", key.requestId);
-        form.AddField("status", Status);
+        form.AddField("status", sStatus);
         form.AddField("token", User.user.UserToken);
         
         UnityWebRequest requestRequestUpdate = UnityWebRequest.Post(Utilities.apiURL + "/api/request/update_status", form);
@@ -85,35 +99,32 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
             switch(jsonRequestUpdate.code)
             {
-                case "request_not_found":
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro: pedido não encontrado", Connection: true, _Key:key);
-                    break;
                 case "request_error_on_update_status":
                     Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro: erro ao devolver a chave", Connection: true, _Key:key);
                     break;
                 case "request_updated_status":
-                    if(Status == Utilities.Status.started.ToString())
+                    switch(IStatus)
                     {
-                        int i = User.user.UserKeys.IndexOf(key);
-                        User.user.UserKeys[i].status = (int)Utilities.Status.started;
+                        case (int)Utilities.Status.started:
+                            int i = User.user.UserKeys.IndexOf(key);
+                            User.user.UserKeys[i].status = IStatus;
 
-                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave liberada com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:(int)Utilities.Status.started, _Key:key);
-                    }
-                    else if(Status == Utilities.Status.canceled.ToString())
-                    {
-                        User.user.UserKeys.Remove(key);
+                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave liberada com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:IStatus, _Key:key);
+                            break;
+                        case (int)Utilities.Status.ended:
+                            User.user.UserKeys.Remove(key);
 
-                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Pedido cancelado com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:(int)Utilities.Status.canceled, _Key:key);
-                    }
-                    else if(Status == Utilities.Status.ended.ToString())
-                    {
-                        User.user.UserKeys.Remove(key);
+                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave devolvida com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:IStatus, _Key:key);
+                            break;
+                        case (int)Utilities.Status.canceled:
+                            User.user.UserKeys.Remove(key);
 
-                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave devolvida com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:(int)Utilities.Status.ended, _Key:key);
+                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Pedido cancelado com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:IStatus, _Key:key);
+                            break;
                     }
                     break;
                 default:
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, jsonRequestUpdate.code, TxtStatus:txtStatus, Connection:true);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro inesperado: " + jsonRequestUpdate.code, TxtStatus:txtStatus, Connection:true);
                     break;
             }
         }

@@ -18,14 +18,14 @@ public class OpenPanelButton : MonoBehaviour
 
     private RequestListJson jsonRequestList;
 
-    private void UpdateDropdownList()
+    private void UpdateDropdownList(string SKey)
     {
         dpdRequestsList.interactable = false;
         dpdRequestsList.options.Clear();
         dpdRequestsList.options.Add(new Dropdown.OptionData("Pedidos"));
         foreach(Key key in User.user.UserKeys)
         {
-            if(key.roomNumber.ToString() == txtNextRoom.text.Substring(6))
+            if(key.roomNumber.ToString() == SKey)
             {
                 dpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + key.requestId.ToString()));
             }
@@ -37,9 +37,10 @@ public class OpenPanelButton : MonoBehaviour
 
     public void OpenPanel()
     {
-        txtNextRoom.text = "Sala: " + txtThisRoom.text;
+        string sKey = txtThisRoom.text.Substring(1);
+        txtNextRoom.text = txtThisRoom.text.Substring(0, 1) == "S" ? "Sala: " + sKey : "Laboratório: " + sKey;
         
-        UpdateDropdownList();
+        UpdateDropdownList(sKey);
 
         panelCover.SetActive(true);
         panelRequest.SetActive(true);
@@ -47,9 +48,10 @@ public class OpenPanelButton : MonoBehaviour
 
     public void SwitchPanel()
     {
-        txtNextRoom.text = "Sala: " + txtThisRoom.text.Substring(6);
+        string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
+        txtNextRoom.text = txtThisRoom.text.Substring(0, 1) == "S" ? "Sala: " + sKey : "Laboratório: " + sKey;
 
-        UpdateDropdownList();
+        UpdateDropdownList(sKey);
 
         txtMsg.text = "";
         panelMsg.SetActive(false);

@@ -28,7 +28,7 @@ public class OpenPanelDropdown : MonoBehaviour
         {
             Key key = Utilities.WhichRequest(dpdRequestsList);
 
-            txtNextRoom.text = "Sala: " + txtThisRoom.text.Substring(6);
+            txtNextRoom.text = txtThisRoom.text.Substring(0, 1) == "S" ? "Sala: " + key.roomNumber.ToString() : "Laboratório: " + key.roomNumber.ToString();
             txtRequestId.text = "Pedido " + key.requestId.ToString();
 
             string sStatus = "";

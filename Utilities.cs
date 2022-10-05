@@ -21,12 +21,10 @@ public class Utilities
     public static Key WhichRequest(Dropdown DpdRequestsList)
     {
         string sId = (DpdRequestsList.options[DpdRequestsList.value].text).Substring(7);
-        int iId;
-        Int32.TryParse(sId, out iId);
 
         foreach(Key key in User.user.UserKeys)
         {
-            if(Id == key.requestId)
+            if(sId == key.requestId.ToString())
             {
                 return key;
             }
