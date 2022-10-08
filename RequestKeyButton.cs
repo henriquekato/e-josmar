@@ -14,8 +14,7 @@ public class RequestKeyButton : MonoBehaviour
     [SerializeField] Dropdown dpdEndTime;
     [SerializeField] InputField inputEndHour;
     [SerializeField] InputField inputEndMin;
-    [SerializeField] InputField inputDay;
-    [SerializeField] Dropdown dpdMonth;
+    [SerializeField] Dropdown dpdWeekDay;
     [SerializeField] Button btnRequestKey;
     [SerializeField] Dropdown dpdRequestsList;
     [SerializeField] GameObject panelMsg;
@@ -102,7 +101,7 @@ public class RequestKeyButton : MonoBehaviour
         if(dpdStartTime.gameObject.activeInHierarchy)
         {
             sTimeStart = dpdStartTime.options[dpdStartTime.value].text;
-            sTimeStart = sTimeStart == "AGORA" ? DateTime.UtcNow.ToLocalTime().ToString("HH:mm:ss") : sTimeStart + ":00";
+            sTimeStart = sTimeStart == "AGORA" ? DateTime.Now.ToString("HH:mm:ss") : sTimeStart + ":00";
         }
         else
         {
@@ -198,6 +197,8 @@ public class RequestKeyButton : MonoBehaviour
                     dpdRequestsList.RefreshShownValue();
 
                     Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Pedido " + jsonRequestCreate.id + " feito com sucesso");
+
+                    Utilities.ClearFields(dpdStartTime, dpdEndTime, inputStartHour, inputStartMin, inputEndHour, inputEndMin, dpdWeekDay);
                     break;
                 default:
                     Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro inesperado: " + jsonRequestCreate.code);

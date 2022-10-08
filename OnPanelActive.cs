@@ -10,16 +10,25 @@ public class OnPanelActive : MonoBehaviour
     [SerializeField] Text txtThisRoom;
     [SerializeField] Text txtHolder;
     [SerializeField] Button btnRequestKey;
+    [SerializeField] Dropdown dpdStartTime;
+    [SerializeField] InputField inputStartHour;
+    [SerializeField] InputField inputStartMin;
+    [SerializeField] Dropdown dpdEndTime;
+    [SerializeField] InputField inputEndHour;
+    [SerializeField] InputField inputEndMin;
+    [SerializeField] Dropdown dpdWeekDay;
 
     private RequestListJson jsonRequestList;
 
     void OnEnable()
     {
+        Utilities.ClearFields(dpdStartTime, dpdEndTime, inputStartHour, inputStartMin, inputEndHour, inputEndMin, dpdWeekDay);
+
         Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações");
 
         string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
 
-        string sDate = DateTime.UtcNow.ToLocalTime().ToString("yyyy-MM-dd") + " " + DateTime.UtcNow.ToLocalTime().ToString("HH:mm:ss");
+        string sDate = DateTime.Now.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss");
 
         StartCoroutine(GetKeyStatus(sKey, sDate));
     }
