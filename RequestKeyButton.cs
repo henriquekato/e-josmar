@@ -22,140 +22,25 @@ public class RequestKeyButton : MonoBehaviour
 
     private RequestCreateJson jsonRequestCreate;
 
-    private enum Months31Days
-    {
-        JANEIRO, MARÇO, MAIO, JULHO, AGOSTO, OUTUBRO, DEZEMBRO
-    }
-    private enum Months30Days
-    {
-        ABRIL, JUNHO, SETEMBRO, NOVEMBRO
-    }
-
-    private string VerifyInputDay()
-    {
-        string sTimeYear = DateTime.UtcNow.ToLocalTime().ToString("yyyy");
-
-        string sTimeMonth = dpdMonth.value + 1 < 10 ? "0" + (dpdMonth.value + 1).ToString() : (dpdMonth.value + 1).ToString();
-
-        string sTimeDay = "";
-        if(inputDay.text != "")
-        {
-            int iNumberDay;
-            Int32.TryParse(inputDay.text, out iNumberDay);
-            
-            if(Enum.IsDefined(typeof(Months31Days), dpdMonth.options[dpdMonth.value].text))
-            {
-                if(iNumberDay <= 0 | iNumberDay > 31) return null;
-            }
-            else if(Enum.IsDefined(typeof(Months30Days), dpdMonth.options[dpdMonth.value].text))
-            {
-                if(iNumberDay <= 0 | iNumberDay > 30) return null;
-            }
-            else
-            {
-                if(iNumberDay <= 0 | iNumberDay > 28) return null;
-            }
-
-            sTimeDay = iNumberDay < 10 ? "0" + inputDay.text : inputDay.text;
-        }
-        else return null;
-
-        return sTimeYear + "-" + sTimeMonth + "-" + sTimeDay;
-    }
-
-    private string VerifyInputHour(string STime)
-    {
-        if(STime != "")
-        {
-            int iTime;
-            Int32.TryParse(STime, out iTime);
-            if(iTime > 24 | iTime < 0) return null;
-            else
-            {
-                if(iTime < 10) STime = "0" + STime;
-            }
-            return STime;
-        }
-        else return null;
-    }
-    
-    private string VerifyInputMin(string STime)
-    {
-        if(STime != "")
-        {
-            int iTime;
-            Int32.TryParse(STime, out iTime);
-            if(iTime > 60 | iTime < 0) return null;
-            else
-            {
-                if(iTime < 10) STime = "0" + STime;
-            }
-            return STime;
-        }
-        else return "00";
-    }
-
-    private string TimeStart()
-    {
-        string sTimeStart = "";
-        if(dpdStartTime.gameObject.activeInHierarchy)
-        {
-            sTimeStart = dpdStartTime.options[dpdStartTime.value].text;
-            sTimeStart = sTimeStart == "AGORA" ? DateTime.Now.ToString("HH:mm:ss") : sTimeStart + ":00";
-        }
-        else
-        {
-            string sStartHour = VerifyInputHour(inputStartHour.text);
-            if(sStartHour is null) return null;
-            string sStartMin = VerifyInputMin(inputStartMin.text);
-            if(sStartMin is null) return null;
-            sTimeStart = sStartHour + ":" + sStartMin + ":00";
-        }
-        return sTimeStart;
-    }
-
-    private string TimeEnd()
-    {
-        string sTimeEnd = "";
-        if(dpdEndTime.gameObject.activeInHierarchy)
-        {
-            sTimeEnd = dpdEndTime.options[dpdEndTime.value].text + ":00";
-        }
-        else
-        {
-            string sEndHour = VerifyInputHour(inputEndHour.text);
-            if(sEndHour is null) return null;
-            string sEndMin = VerifyInputMin(inputEndMin.text);
-            if(sEndMin is null) return null;
-            sTimeEnd = sEndHour + ":" + sEndMin + ":00";
-        }
-        return sTimeEnd;
-    }
-
     public void RequestKey()
     {
         Utilities.StartRequest(new Button[] {btnRequestKey}, txtMsg, "Carregando", panelMsg);
 
-        string sTimeStart = TimeStart();
+        string sTimeStart = VerifyTime.TimeStart(dpdStartTime, inputStartHour, inputStartMin);
         if(sTimeStart is null)
         {
             Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: horário inválido");
             return;
         }
 
-        string sTimeEnd = TimeEnd();
+        string sTimeEnd = VerifyTime.TimeEnd(dpdEndTime, inputEndHour, inputEndMin);
         if(sTimeEnd is null)
         {
             Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: horário inválido");
             return;
         }
 
-        string sDateDay = VerifyInputDay();
-        if(sDateDay is null)
-        {
-            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: dia inválido");
-            return;
-        }
+        string sDateDay = VerifyTime.VerifyDpdWeekDay(dpdWeekDay);
 
         string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
 
