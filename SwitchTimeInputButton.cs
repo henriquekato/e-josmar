@@ -7,6 +7,7 @@ public class SwitchTimeInputButton : MonoBehaviour
     [SerializeField] InputField inputHour;
     [SerializeField] Text txtColon;
     [SerializeField] InputField inputMin;
+    [SerializeField] Text txtBtnSwitchInput;
 
     public void SwitchTimeInput()
     {
@@ -16,6 +17,7 @@ public class SwitchTimeInputButton : MonoBehaviour
             inputHour.gameObject.SetActive(true);
             txtColon.gameObject.SetActive(true);
             inputMin.gameObject.SetActive(true);
+            txtBtnSwitchInput.text = "Trocar";
         }
         else
         {
@@ -23,6 +25,7 @@ public class SwitchTimeInputButton : MonoBehaviour
             inputHour.gameObject.SetActive(false);
             txtColon.gameObject.SetActive(false);
             inputMin.gameObject.SetActive(false);
+            txtBtnSwitchInput.text = "Digitar";
         }
     }
 }
