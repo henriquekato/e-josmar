@@ -18,30 +18,15 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
     private RequestUpdateJson jsonRequestUpdate;
 
-    private bool TimeOk(Key key)
-    {
-        int iYear, iMonth, iDay, iHour, iMin, iSec;
-        Int32.TryParse(key.dateStart.Substring(0, 4), out iYear);
-        Int32.TryParse(key.dateStart.Substring(5, 2), out iMonth);
-        Int32.TryParse(key.dateStart.Substring(8, 2), out iDay);
-        Int32.TryParse(key.dateStart.Substring(11, 2), out iHour);
-        Int32.TryParse(key.dateStart.Substring(14, 2), out iMin);
-        Int32.TryParse(key.dateStart.Substring(17, 2), out iSec);
-        DateTime keyDateStart = new DateTime(iYear, iMonth, iDay, iHour, iMin, iSec);
-
-        bool isOk = DateTime.Now < keyDateStart ? false : true;
-        return isOk;
-    }
-
     public void UpdateKeyStatusToStart()
     {
         Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando", panelMsg);
 
         Key key = Utilities.WhichRequest(dpdRequestsList);
         
-        // if(TimeOk(key))
+        // if(Utilities.TimeOk(key))
         // {
-            StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.started));
+            StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.start_request));
         // }
         // else
         // {
@@ -54,7 +39,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
     {
         Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando", panelMsg);
         Key key = Utilities.WhichRequest(dpdRequestsList);
-        StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.ended));
+        StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.end_request));
     }
 
     public void UpdateKeyStatusToCancel()
@@ -69,10 +54,10 @@ public class UpdateKeyStatusButton : MonoBehaviour
         string sStatus = "";
         switch(IStatus)
         {
-            case (int)Utilities.Status.started:
-                sStatus = "started";
+            case (int)Utilities.Status.start_request:
+                sStatus = "start_request";
                 break;
-            case (int)Utilities.Status.ended:
+            case (int)Utilities.Status.end_request:
                 sStatus = "ended";
                 break;
             case (int)Utilities.Status.canceled:
@@ -105,13 +90,13 @@ public class UpdateKeyStatusButton : MonoBehaviour
                 case "request_updated_status":
                     switch(IStatus)
                     {
-                        case (int)Utilities.Status.started:
+                        case (int)Utilities.Status.start_request:
                             int i = User.user.UserKeys.IndexOf(key);
-                            User.user.UserKeys[i].status = IStatus;
+                            User.user.UserKeys[i].status = (int)Utilities.Status.started;
 
                             Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave liberada com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:IStatus, _Key:key);
                             break;
-                        case (int)Utilities.Status.ended:
+                        case (int)Utilities.Status.end_request:
                             User.user.UserKeys.Remove(key);
 
                             Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave devolvida com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:IStatus, _Key:key);
