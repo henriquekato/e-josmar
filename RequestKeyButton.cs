@@ -83,7 +83,7 @@ public class RequestKeyButton : MonoBehaviour
 
                     Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Pedido " + jsonRequestCreate.id + " feito com sucesso");
 
-                    Utilities.ClearFields(dpdStartTime, dpdEndTime, inputStartHour, inputStartMin, inputEndHour, inputEndMin, dpdWeekDay);
+                    Utilities.ClearFields(new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
                     break;
                 default:
                     Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro inesperado: " + jsonRequestCreate.code);

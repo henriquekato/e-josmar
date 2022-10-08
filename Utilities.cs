@@ -103,18 +103,21 @@ public class Utilities
         DpdRequestsList.interactable = true;
     }
 
-    public static void ClearFields(Dropdown DpdStartTime, Dropdown DpdEndTime, InputField InputStartHour, InputField InputStartMin, InputField InputEndHour, InputField InputEndMin, Dropdown DpdWeekDay)
+    public static void ClearFields(Dropdown[] Dropdowns, InputField[] InputFields, Text TextMsg = null)
     {
-        DpdStartTime.value = 0;
-        DpdStartTime.RefreshShownValue();
-        DpdEndTime.value = 0;
-        DpdEndTime.RefreshShownValue();
-        InputStartHour.text = "";
-        InputStartMin.text = "";
-        InputEndHour.text = "";
-        InputEndMin.text = "";
-        DpdWeekDay.value = 0;
-        DpdWeekDay.RefreshShownValue();
+        foreach(Dropdown dpd in Dropdowns)
+        {
+            dpd.value = 0;
+            dpd.RefreshShownValue();
+        }
+        foreach(InputField inpt in InputFields)
+        {
+            inpt.text = "";
+        }
+        if(!(TextMsg is null))
+        {
+            TextMsg.text = "";
+        }
     }
 }
 
