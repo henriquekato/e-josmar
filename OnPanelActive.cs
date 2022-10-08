@@ -10,14 +10,29 @@ public class OnPanelActive : MonoBehaviour
     [SerializeField] Text txtThisRoom;
     [SerializeField] Text txtHolder;
     [SerializeField] Button btnRequestKey;
+    [SerializeField] Dropdown dpdStartTime;
+    [SerializeField] InputField inputStartHour;
+    [SerializeField] InputField inputStartMin;
+    [SerializeField] Dropdown dpdEndTime;
+    [SerializeField] InputField inputEndHour;
+    [SerializeField] InputField inputEndMin;
+    [SerializeField] Dropdown dpdWeekDay;
+    [SerializeField] Dropdown dpdRequestsList;
+    [SerializeField] GameObject panelMsg;
+    [SerializeField] Text txtMsg;
 
     private RequestListJson jsonRequestList;
 
     void OnEnable()
     {
-        Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações");
-
         string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
+        Utilities.UpdateDropdownList(dpdRequestsList, sKey);
+        VerifyTime.UpdateDpdWeekDays(dpdWeekDay);
+
+        Utilities.ClearFields(new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay},  new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin}, txtMsg);
+        panelMsg.SetActive(false);
+
+        Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações");
 
         string sDate = DateTime.Now.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss");
 
