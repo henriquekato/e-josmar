@@ -24,15 +24,15 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
         Key key = Utilities.WhichRequest(dpdRequestsList);
         
-        if(VerifyTime.TimeOk(key))
-        {
+        // if(VerifyTime.TimeOk(key))
+        // {
             StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.start_request));
-        }
-        else
-        {
-            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "A hora do seu pedido ainda não chegou", Connection:true, _Key:key);
-            return;
-        }
+        // }
+        // else
+        // {
+        //     Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "A hora do seu pedido ainda não chegou", Connection:true, _Key:key);
+        //     return;
+        // }
     }
 
     public void UpdateKeyStatusToEnded()
@@ -58,7 +58,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
                 sStatus = "start_request";
                 break;
             case (int)Utilities.Status.end_request:
-                sStatus = "ended";
+                sStatus = "end_request";
                 break;
             case (int)Utilities.Status.canceled:
                 sStatus = "canceled";
