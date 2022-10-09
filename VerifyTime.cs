@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,20 +25,22 @@ public class VerifyTime
     public static void UpdateDpdWeekDays(Dropdown DpdWeekDay)
     {
         List<string> weekDayOptions = new List<string>();
-        string sLongDate = DateTime.Now.ToLongDateString();
+
+        CultureInfo ci = new CultureInfo("en-US");
+        string sLongDate = DateTime.Now.ToString("F", ci);
         string sDay = sLongDate.Substring(0, 3);
         
         weekDayOptions.Add("Sexta-feira");
-        if(sDay != "sex")
+        if(sDay != "Fri")
         {
             weekDayOptions.Add("Quinta-feira");
-            if(sDay != "qui")
+            if(sDay != "Thu")
             {
                 weekDayOptions.Add("Quarta-feira");
-                if(sDay != "qua")
+                if(sDay != "Wed")
                 {
                     weekDayOptions.Add("Terça-feira");
-                    if(sDay != "ter") weekDayOptions.Add("Segunda-feira");
+                    if(sDay != "Tue") weekDayOptions.Add("Segunda-feira");
                 }
             }
         }
@@ -56,22 +59,23 @@ public class VerifyTime
         switch(sWeekDay)
         {
             case "Segunda-feira":
-                sWeekDay = "seg";
+                sWeekDay = "Mon";
                 break;
             case "Terça-feira":
-                sWeekDay = "ter";
+                sWeekDay = "Tue";
                 break;
             case "Quarta-feira":
-                sWeekDay = "qua";
+                sWeekDay = "Wed";
                 break;
             case "Quinta-feira":
-                sWeekDay = "qui";
+                sWeekDay = "Thu";
                 break;
             case "Sexta-feira":
-                sWeekDay = "sex";
+                sWeekDay = "Fri";
                 break;
         }
         
+        CultureInfo ci = new CultureInfo("en-US");
         DateTime sToday = DateTime.Now;
         string sDateDay = "";
         if(sToday.ToLongDateString().Substring(0, 3) == sWeekDay)
@@ -80,7 +84,7 @@ public class VerifyTime
         }
         else
         {
-            List<string> days = new List<string>() {sToday.AddDays(1).ToLongDateString(), sToday.AddDays(2).ToLongDateString(), sToday.AddDays(3).ToLongDateString(), sToday.AddDays(4).ToLongDateString(), sToday.AddDays(5).ToLongDateString(), sToday.AddDays(6).ToLongDateString()};
+            List<string> days = new List<string>() {sToday.AddDays(1).ToString("F", ci), sToday.AddDays(2).ToString("F", ci), sToday.AddDays(3).ToString("F", ci), sToday.AddDays(4).ToString("F", ci), sToday.AddDays(5).ToString("F", ci), sToday.AddDays(6).ToString("F", ci)};
             for(int i = 0; i < days.Count; i++)
             {
                 if(days[i].Substring(0, 3) == sWeekDay)
