@@ -31,6 +31,8 @@ public class OnPanelActive : MonoBehaviour
 
         Utilities.ClearFields(new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay},  new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin}, txtMsg);
         panelMsg.SetActive(false);
+        Image panelImg = panelMsg.GetComponent<Image>();
+        panelImg.color = new Color(180, 180, 180);
 
         Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações...");
 

@@ -34,7 +34,7 @@ public class AuthButton : MonoBehaviour
 
         if(requestAuth.result == UnityWebRequest.Result.ConnectionError | requestAuth.result == UnityWebRequest.Result.ProtocolError)
         {
-            Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro de conexão");
+            Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro de conexão", panelMsg);
         }
         else
         {
@@ -43,10 +43,10 @@ public class AuthButton : MonoBehaviour
             switch(jsonAuth.code)
             {
                 case "api_login_not_found":
-                    Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro: usuário não encontrado");
+                    Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro: usuário não encontrado", panelMsg);
                     break;
                 case "api_wrong_password":
-                    Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro: senha incorreta");
+                    Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro: senha incorreta", panelMsg);
                     break;
                 case "api_auth":
                     User.user.UserId = jsonAuth.id;
@@ -55,7 +55,7 @@ public class AuthButton : MonoBehaviour
                     StartCoroutine(GetLoadUserKeys());
                     break;
                 default:
-                    Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro inesperado: " + jsonAuth.code);
+                    Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro inesperado: " + jsonAuth.code, panelMsg);
                     break;
             }
         }
@@ -68,7 +68,7 @@ public class AuthButton : MonoBehaviour
 
         if(requestLoadUserKeys.result == UnityWebRequest.Result.ConnectionError | requestLoadUserKeys.result == UnityWebRequest.Result.ProtocolError)
         {
-            Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro de conexão");
+            Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro de conexão", panelMsg);
         }
         else
         {
@@ -87,7 +87,7 @@ public class AuthButton : MonoBehaviour
             }
             else
             {
-                Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro inesperado: " + jsonLoadUserKeys.code);
+                Utilities.EndRequest(new Button[] {btnLogin}, txtMsg, "Erro inesperado: " + jsonLoadUserKeys.code, panelMsg);
             }
         }
     }

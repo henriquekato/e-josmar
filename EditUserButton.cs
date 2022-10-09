@@ -38,7 +38,7 @@ public class EditUserButton : MonoBehaviour
 
         if(requestEditUser.result == UnityWebRequest.Result.ConnectionError | requestEditUser.result == UnityWebRequest.Result.ProtocolError)
         {
-            Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro de conexão");
+            Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro de conexão", panelMsg);
         }
         else
         {
@@ -47,34 +47,34 @@ public class EditUserButton : MonoBehaviour
             switch(jsonEditUser.code)
             {
                 case "user_name_in_use":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: nome de usuário já em uso");
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: nome de usuário já em uso", panelMsg);
                     break;
                 case "user_email_in_use":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: email já em uso");
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: email já em uso", panelMsg);
                     break;
                 case "user_nothing_edited":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: você não editou nada");
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: você não editou nada", panelMsg);
                     break;
                 case "user_error_on_edit":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: erro ao editar usuário");
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: erro ao editar usuário", panelMsg);
                     break;
                 case "param_filter_not_match":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: email inválido");
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: email inválido", panelMsg);
                     break;
                 case "param_more_than":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: nome ou senha deve conter pelo menos 5 caracteres");
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: nome ou senha deve conter pelo menos 5 caracteres", panelMsg);
                     break;
                 case "param_less_than":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: nome ou senha deve ser menor");
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: nome ou senha deve ser menor", panelMsg);
                     break;
                 case "user_edited":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Usuário editado com sucesso");
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Usuário editado com sucesso", panelMsg, true);
                     inputUsername.text = "";
                     inputEmail.text = "";
                     inputPassword.text = "";
                     break;
                 default:
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro inesperado: " + jsonEditUser.code);
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro inesperado: " + jsonEditUser.code, panelMsg);
                     break;
             }
         }

@@ -29,14 +29,14 @@ public class RequestKeyButton : MonoBehaviour
         string sTimeStart = VerifyTime.TimeStart(dpdStartTime, inputStartHour, inputStartMin);
         if(sTimeStart is null)
         {
-            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: horário inválido");
+            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: horário inválido", panelMsg);
             return;
         }
 
         string sTimeEnd = VerifyTime.TimeEnd(dpdEndTime, inputEndHour, inputEndMin);
         if(sTimeEnd is null)
         {
-            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: horário inválido");
+            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: horário inválido", panelMsg);
             return;
         }
 
@@ -54,7 +54,7 @@ public class RequestKeyButton : MonoBehaviour
 
         if(requestRequestCreate.result == UnityWebRequest.Result.ConnectionError | requestRequestCreate.result == UnityWebRequest.Result.ProtocolError)
         {
-            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro de conexão");
+            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro de conexão", panelMsg);
         }
         else
         {
@@ -64,13 +64,13 @@ public class RequestKeyButton : MonoBehaviour
             {
                 case "request_date_end_before_start":
                 case "request_date_end_before_now":
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: data inválida");
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: data inválida", panelMsg);
                     break;
                 case "request_key_already_in_use":
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: essa chave já está sendo usada");
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: essa chave já está sendo usada", panelMsg);
                     break;
                 case "request_error_on_create":
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: erro ao criar o pedido");
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: erro ao criar o pedido", panelMsg);
                     break;
                 case "request_created":
                     int iRoomNumber;
@@ -81,12 +81,12 @@ public class RequestKeyButton : MonoBehaviour
                     dpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + jsonRequestCreate.id.ToString()));
                     dpdRequestsList.RefreshShownValue();
 
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Pedido " + jsonRequestCreate.id + " feito com sucesso");
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Pedido " + jsonRequestCreate.id + " feito com sucesso", panelMsg, true);
 
                     Utilities.ClearFields(new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
                     break;
                 default:
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro inesperado: " + jsonRequestCreate.code);
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro inesperado: " + jsonRequestCreate.code, panelMsg);
                     break;
             }
         }

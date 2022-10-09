@@ -60,6 +60,8 @@ public class OpenPanelDropdown : MonoBehaviour
 
             txtMsg.text = "";
             panelMsg.SetActive(false);
+            Image panelImg = panelMsg.GetComponent<Image>();
+            panelImg.color = new Color(180, 180, 180);
 
             panelRequest.SetActive(false);
             panelUpdateRequest.SetActive(true);

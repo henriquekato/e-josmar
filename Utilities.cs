@@ -34,7 +34,13 @@ public class Utilities
 
     public static void StartRequest(Button[] Buttons, Text TxtMsg, string Msg, GameObject PanelMsg = null)
     {
-        if(!(PanelMsg is null)) PanelMsg.SetActive(true);
+        if(!(PanelMsg is null)) 
+        {
+            PanelMsg.SetActive(true);
+
+            Image panelImg = PanelMsg.GetComponent<Image>();
+            panelImg.color = new Color(180, 180, 180);
+        }
         TxtMsg.text = Msg;
         foreach(Button button in Buttons)
         {
@@ -42,21 +48,26 @@ public class Utilities
         }
     }
 
-    public static void EndRequest(Button[] Buttons, Text TxtMsg, string Msg)
+    public static void EndRequest(Button[] Buttons, Text TxtMsg, string Msg, GameObject PanelMsg = null, bool Success = false)
     {
         TxtMsg.text = Msg;
         foreach(Button button in Buttons)
         {
             button.interactable = true;
         }
+
+        Image panelImg = PanelMsg.GetComponent<Image>();
+        if(!(PanelMsg is null)) panelImg.color = Success ? new Color(0, 170, 0) : new Color(170, 0, 0);
     }
 
-    public static void EndUpdateRequest(Button BtnReturn, Button BtnStart, Button BtnCancel, Button BtnReturnKey, Text TxtMsg, string Msg, Text TxtStatus = null, bool Connection = false, bool Success = false, int Status = 0, Key _Key = null)
+    public static void EndUpdateRequest(Button BtnReturn, Button BtnStart, Button BtnCancel, Button BtnReturnKey, Text TxtMsg, string Msg, Text TxtStatus = null, GameObject PanelMsg = null, bool Connection = false, bool Success = false, int Status = 0, Key _Key = null)
     {
         TxtMsg.text = Msg;
 
         BtnReturn.interactable = true;
 
+        Image panelImg = PanelMsg.GetComponent<Image>();
+        if(!(PanelMsg is null)) panelImg.color = Success ? new Color(0, 170, 0) : new Color(170, 0, 0);
         if(Connection)
         {
             if(Success)

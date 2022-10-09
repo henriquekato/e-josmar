@@ -30,7 +30,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         }
         else
         {
-            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "A hora do seu pedido ainda não chegou", Connection:true, _Key:key);
+            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "A hora do seu pedido ainda não chegou", PanelMsg:panelMsg, Connection:true, _Key:key);
             return;
         }
     }
@@ -76,7 +76,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
         if(requestRequestUpdate.result == UnityWebRequest.Result.ConnectionError | requestRequestUpdate.result == UnityWebRequest.Result.ProtocolError)
         {
-            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro de conexão");
+            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro de conexão", PanelMsg:panelMsg);
         }
         else
         {
@@ -85,7 +85,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
             switch(jsonRequestUpdate.code)
             {
                 case "request_error_on_update_status":
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro: erro ao devolver a chave", Connection: true, _Key:key);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro: erro ao devolver a chave", PanelMsg:panelMsg, Connection: true, _Key:key);
                     break;
                 case "request_updated_status":
                     switch(IStatus)
@@ -94,22 +94,22 @@ public class UpdateKeyStatusButton : MonoBehaviour
                             int i = User.user.UserKeys.IndexOf(key);
                             User.user.UserKeys[i].status = (int)Utilities.Status.started;
 
-                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave liberada com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:IStatus, _Key:key);
+                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave liberada com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
                             break;
                         case (int)Utilities.Status.end_request:
                             User.user.UserKeys.Remove(key);
 
-                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave devolvida com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:IStatus, _Key:key);
+                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave devolvida com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
                             break;
                         case (int)Utilities.Status.canceled:
                             User.user.UserKeys.Remove(key);
 
-                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Pedido cancelado com sucesso", TxtStatus:txtStatus, Connection:true, Success:true, Status:IStatus, _Key:key);
+                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Pedido cancelado com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
                             break;
                     }
                     break;
                 default:
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro inesperado: " + jsonRequestUpdate.code, TxtStatus:txtStatus, Connection:true);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro inesperado: " + jsonRequestUpdate.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
                     break;
             }
         }
