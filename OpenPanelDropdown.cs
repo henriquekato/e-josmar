@@ -58,10 +58,7 @@ public class OpenPanelDropdown : MonoBehaviour
             string sDay = key.dateStart.Substring(8, 2);
             txtDateDay.text = "Dia: " + sDay + "/" + sMonth + "/" + sYear;
 
-            txtMsg.text = "";
-            panelMsg.SetActive(false);
-            Image panelImg = panelMsg.GetComponent<Image>();
-            panelImg.color = new Color(180, 180, 180);
+            Utilities.ClearFields(TxtMsg:txtMsg, PanelMsg:panelMsg);
 
             panelRequest.SetActive(false);
             panelUpdateRequest.SetActive(true);

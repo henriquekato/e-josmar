@@ -73,9 +73,9 @@ public class RequestKeyButton : MonoBehaviour
                     Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: erro ao criar o pedido", panelMsg);
                     break;
                 case "request_created":
+                    string sRoomNumber = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6, 1) : txtThisRoom.text.Substring(13, 1);
                     int iRoomNumber;
-                    int iNumberPos = txtThisRoom.text.Substring(0, 1) == "S" ? 6 : 13;
-                    Int32.TryParse(txtThisRoom.text.Substring(iNumberPos), out iRoomNumber);
+                    Int32.TryParse(sRoomNumber, out iRoomNumber);
                     User.user.UserKeys.Add(new Key(iRoomNumber, jsonRequestCreate.id, SDateDay + " " + STimeStart, SDateDay + " " + STimeEnd, (int)Utilities.Status.not_started));
 
                     dpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + jsonRequestCreate.id.ToString()));
@@ -83,7 +83,7 @@ public class RequestKeyButton : MonoBehaviour
 
                     Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Pedido " + jsonRequestCreate.id + " feito com sucesso", panelMsg, true);
 
-                    Utilities.ClearFields(new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
+                    Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
                     break;
                 default:
                     Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro inesperado: " + jsonRequestCreate.code, panelMsg);

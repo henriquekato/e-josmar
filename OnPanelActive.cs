@@ -29,14 +29,11 @@ public class OnPanelActive : MonoBehaviour
         Utilities.UpdateDropdownList(dpdRequestsList, sKey);
         VerifyTime.UpdateDpdWeekDays(dpdWeekDay);
 
-        Utilities.ClearFields(new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay},  new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin}, txtMsg);
-        panelMsg.SetActive(false);
-        Image panelImg = panelMsg.GetComponent<Image>();
-        panelImg.color = new Color(180, 180, 180);
+        Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin}, TxtMsg:txtMsg, PanelMsg:panelMsg);
 
         Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações...");
 
-        string sDate = DateTime.Now.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss");
+        string sDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
         StartCoroutine(GetKeyStatus(sKey, sDate));
     }

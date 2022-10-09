@@ -22,14 +22,16 @@ public class Utilities
     {
         string sId = (DpdRequestsList.options[DpdRequestsList.value].text).Substring(7);
 
-        foreach(Key key in User.user.UserKeys)
+        int keyIndex = 0;
+        for(int i = 0; i < User.user.UserKeys.Count; i++)
         {
-            if(sId == key.requestId.ToString())
+            if(sId == User.user.UserKeys[i].requestId.ToString())
             {
-                return key;
+                keyIndex = i;
+                break;
             }
         }
-        return null;
+        return User.user.UserKeys[keyIndex];
     }
 
     public static void StartRequest(Button[] Buttons, Text TxtMsg, string Msg, GameObject PanelMsg = null)
@@ -37,9 +39,8 @@ public class Utilities
         if(!(PanelMsg is null)) 
         {
             PanelMsg.SetActive(true);
-
             Image panelImg = PanelMsg.GetComponent<Image>();
-            panelImg.color = new Color(180, 180, 180);
+            panelImg.color = new Color(180, 180, 180, 210);
         }
         TxtMsg.text = Msg;
         foreach(Button button in Buttons)
@@ -56,8 +57,11 @@ public class Utilities
             button.interactable = true;
         }
 
-        Image panelImg = PanelMsg.GetComponent<Image>();
-        if(!(PanelMsg is null)) panelImg.color = Success ? new Color(0, 170, 0) : new Color(170, 0, 0);
+        if(!(PanelMsg is null))
+        {
+            Image panelImg = PanelMsg.GetComponent<Image>();
+            panelImg.color = Success ? new Color(0, 255, 0, 210) : new Color(255, 0, 0, 210);
+        }
     }
 
     public static void EndUpdateRequest(Button BtnReturn, Button BtnStart, Button BtnCancel, Button BtnReturnKey, Text TxtMsg, string Msg, Text TxtStatus = null, GameObject PanelMsg = null, bool Connection = false, bool Success = false, int Status = 0, Key _Key = null)
@@ -66,15 +70,18 @@ public class Utilities
 
         BtnReturn.interactable = true;
 
-        Image panelImg = PanelMsg.GetComponent<Image>();
-        if(!(PanelMsg is null)) panelImg.color = Success ? new Color(0, 170, 0) : new Color(170, 0, 0);
+        if(!(PanelMsg is null))
+        {
+            Image panelImg = PanelMsg.GetComponent<Image>();
+            panelImg.color = Success ? new Color(0, 255, 0, 210) : new Color(255, 0, 0, 210);
+        }
         if(Connection)
         {
             if(Success)
             {
                 if(Status == (int)Utilities.Status.start_request)
                 {
-                    TxtStatus.text = "Status: começado";
+                    TxtStatus.text = "Status: em uso";
                     BtnReturnKey.interactable = true;
                 }
                 else if(Status == (int)Utilities.Status.canceled | Status == (int)Utilities.Status.end_request)
@@ -114,20 +121,36 @@ public class Utilities
         DpdRequestsList.interactable = true;
     }
 
-    public static void ClearFields(Dropdown[] Dropdowns, InputField[] InputFields, Text TextMsg = null)
+    public static void ClearFields(Dropdown[] Dropdowns = null, InputField[] InputFields = null, Text TxtMsg = null, GameObject PanelMsg = null)
     {
-        foreach(Dropdown dpd in Dropdowns)
+
+        if(!(Dropdowns is null))
         {
-            dpd.value = 0;
-            dpd.RefreshShownValue();
+            foreach(Dropdown dpd in Dropdowns)
+            {
+                dpd.value = 0;
+                dpd.RefreshShownValue();
+            }
         }
-        foreach(InputField inpt in InputFields)
+
+        if(!(InputFields is null))
         {
-            inpt.text = "";
+            foreach(InputField inpt in InputFields)
+            {
+                inpt.text = "";
+            }
         }
-        if(!(TextMsg is null))
+
+        if(!(TxtMsg is null))
         {
-            TextMsg.text = "";
+            TxtMsg.text = "";
+        }
+
+        if(!(PanelMsg is null))
+        {
+            PanelMsg.SetActive(false);
+            Image PanelImg = PanelMsg.GetComponent<Image>();
+            PanelImg.color = new Color(180, 180, 180, 210);
         }
     }
 }

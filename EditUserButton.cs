@@ -69,9 +69,7 @@ public class EditUserButton : MonoBehaviour
                     break;
                 case "user_edited":
                     Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Usuário editado com sucesso", panelMsg, true);
-                    inputUsername.text = "";
-                    inputEmail.text = "";
-                    inputPassword.text = "";
+                    Utilities.ClearFields(InputFields:new InputField[] {inputUsername, inputEmail, inputPassword});
                     break;
                 default:
                     Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro inesperado: " + jsonEditUser.code, panelMsg);
