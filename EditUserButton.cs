@@ -19,7 +19,7 @@ public class EditUserButton : MonoBehaviour
 
     public void EditUser()
     {
-        Utilities.StartRequest(new Button[] {btnEdit}, txtMsg, "Carregando", panelMsg);
+        Utilities.StartRequest(new Button[] {btnEdit}, txtMsg, "Carregando...", panelMsg);
         StartCoroutine(PostEditUser());
     }
     

@@ -24,7 +24,7 @@ public class RequestKeyButton : MonoBehaviour
 
     public void RequestKey()
     {
-        Utilities.StartRequest(new Button[] {btnRequestKey}, txtMsg, "Carregando", panelMsg);
+        Utilities.StartRequest(new Button[] {btnRequestKey}, txtMsg, "Carregando...", panelMsg);
 
         string sTimeStart = VerifyTime.TimeStart(dpdStartTime, inputStartHour, inputStartMin);
         if(sTimeStart is null)

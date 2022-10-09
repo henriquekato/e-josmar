@@ -20,7 +20,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
     public void UpdateKeyStatusToStart()
     {
-        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando", panelMsg);
+        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando...", panelMsg);
 
         Key key = Utilities.WhichRequest(dpdRequestsList);
         
@@ -37,14 +37,14 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
     public void UpdateKeyStatusToEnded()
     {
-        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando", panelMsg);
+        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando...", panelMsg);
         Key key = Utilities.WhichRequest(dpdRequestsList);
         StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.end_request));
     }
 
     public void UpdateKeyStatusToCancel()
     {
-        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando", panelMsg);
+        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando...", panelMsg);
         Key key = Utilities.WhichRequest(dpdRequestsList);
         StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.canceled));
     }

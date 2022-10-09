@@ -23,7 +23,7 @@ public class AuthButton : MonoBehaviour
     {
         Utilities.apiURL = "https://80-mocno-serverjosmar-" + inputurl.text + ".gitpod.io";    //erro
 
-        Utilities.StartRequest(new Button[] {btnLogin}, txtMsg, "Carregando", panelMsg);
+        Utilities.StartRequest(new Button[] {btnLogin}, txtMsg, "Carregando...", panelMsg);
         StartCoroutine(GetAuth());
     }
 
@@ -51,7 +51,7 @@ public class AuthButton : MonoBehaviour
                 case "api_auth":
                     User.user.UserId = jsonAuth.id;
                     User.user.UserToken = jsonAuth.token;
-                    Utilities.StartRequest(new Button[] {btnLogin}, txtMsg, "Carregando chaves");
+                    Utilities.StartRequest(new Button[] {btnLogin}, txtMsg, "Carregando chaves...");
                     StartCoroutine(GetLoadUserKeys());
                     break;
                 default:

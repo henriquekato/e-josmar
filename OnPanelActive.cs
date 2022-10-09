@@ -32,7 +32,7 @@ public class OnPanelActive : MonoBehaviour
         Utilities.ClearFields(new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay},  new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin}, txtMsg);
         panelMsg.SetActive(false);
 
-        Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações");
+        Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações...");
 
         string sDate = DateTime.Now.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss");
 
