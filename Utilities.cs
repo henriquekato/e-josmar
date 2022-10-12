@@ -40,7 +40,7 @@ public class Utilities
         {
             PanelMsg.SetActive(true);
             Image panelImg = PanelMsg.GetComponent<Image>();
-            panelImg.color = new Color(180, 180, 180, 210);
+            panelImg.color = new Color(140, 140, 140, 80);
         }
         TxtMsg.text = Msg;
         foreach(Button button in Buttons)
@@ -150,7 +150,7 @@ public class Utilities
         {
             PanelMsg.SetActive(false);
             Image PanelImg = PanelMsg.GetComponent<Image>();
-            PanelImg.color = new Color(180, 180, 180, 210);
+            PanelImg.color = new Color(140, 140, 140, 80);
         }
     }
 }
