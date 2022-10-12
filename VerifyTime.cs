@@ -27,24 +27,38 @@ public class VerifyTime
         List<string> weekDayOptions = new List<string>();
 
         CultureInfo ci = new CultureInfo("en-US");
-        string sLongDate = DateTime.Now.ToString("F", ci);
-        string sDay = sLongDate.Substring(0, 3);
-        
+        var todayDate = DateTime.Now;
+        string sTodayLongDate = todayDate.ToString("F", ci);
+        string sTodayWeekDay = sTodayLongDate.Substring(0, 3);
+
+        int daysToCome = 0;
         weekDayOptions.Add("Sexta-feira");
-        if(sDay != "Fri")
+        if(sTodayWeekDay != "Fri")
         {
             weekDayOptions.Add("Quinta-feira");
-            if(sDay != "Thu")
+            if(sTodayWeekDay != "Thu")
             {
                 weekDayOptions.Add("Quarta-feira");
-                if(sDay != "Wed")
+                if(sTodayWeekDay != "Wed")
                 {
                     weekDayOptions.Add("Terça-feira");
-                    if(sDay != "Tue") weekDayOptions.Add("Segunda-feira");
+                    if(sTodayWeekDay != "Tue")
+                    {
+                        weekDayOptions.Add("Segunda-feira");
+                        if(sTodayWeekDay != "Mon")
+                        {
+                            daysToCome = sTodayWeekDay == "Sun" ? 1 : 2;
+                        }
+                    }
                 }
             }
         }
         weekDayOptions.Reverse();
+
+        for(int i = 0; i < weekDayOptions.Count; i++)
+        {
+            weekDayOptions[i] += " " + todayDate.AddDays(daysToCome+i).ToString("(dd/MM)");
+        }
 
         DpdWeekDay.options.Clear();
         DpdWeekDay.AddOptions(weekDayOptions);
@@ -55,46 +69,10 @@ public class VerifyTime
     public static string VerifyDpdWeekDay(Dropdown DpdWeekDay)
     {
         string sWeekDay = DpdWeekDay.options[DpdWeekDay.value].text;
-
-        switch(sWeekDay)
-        {
-            case "Segunda-feira":
-                sWeekDay = "Mon";
-                break;
-            case "Terça-feira":
-                sWeekDay = "Tue";
-                break;
-            case "Quarta-feira":
-                sWeekDay = "Wed";
-                break;
-            case "Quinta-feira":
-                sWeekDay = "Thu";
-                break;
-            case "Sexta-feira":
-                sWeekDay = "Fri";
-                break;
-        }
-        
-        CultureInfo ci = new CultureInfo("en-US");
-        DateTime sToday = DateTime.Now;
-        string sDateDay = "";
-        if(sToday.ToLongDateString().Substring(0, 3) == sWeekDay)
-        {
-            sDateDay = DateTime.Now.ToString("yyyy-MM-dd");
-        }
-        else
-        {
-            List<string> days = new List<string>() {sToday.AddDays(1).ToString("F", ci), sToday.AddDays(2).ToString("F", ci), sToday.AddDays(3).ToString("F", ci), sToday.AddDays(4).ToString("F", ci), sToday.AddDays(5).ToString("F", ci), sToday.AddDays(6).ToString("F", ci)};
-            for(int i = 0; i < days.Count; i++)
-            {
-                if(days[i].Substring(0, 3) == sWeekDay)
-                {
-                    sDateDay = sToday.AddDays(i+1).ToString("yyyy-MM-dd");
-                    break;
-                }
-            }
-        }
-        return sDateDay;
+        string sDay = sWeekDay.Substring(sWeekDay.Length-6, 2);
+        string sMonth = sWeekDay.Substring(sWeekDay.Length-3, 2);
+        string sYear = DateTime.Now.ToString("yyyy");
+        return sYear + "-" + sMonth + "-" + sDay;
     }
 
     public static string TimeStart(Dropdown DpdStartTime, InputField InputStartHour, InputField InputStartMin)
