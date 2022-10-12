@@ -67,10 +67,10 @@ public class RequestKeyButton : MonoBehaviour
                     Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: data inválida", panelMsg);
                     break;
                 case "request_key_already_in_use":
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: essa chave já está sendo usada", panelMsg);
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Essa chave já está sendo usada", panelMsg);
                     break;
                 case "request_error_on_create":
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: erro ao criar o pedido", panelMsg);
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro ao criar o pedido", panelMsg);
                     break;
                 case "request_created":
                     string sRoomNumber = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6, 1) : txtThisRoom.text.Substring(13, 1);

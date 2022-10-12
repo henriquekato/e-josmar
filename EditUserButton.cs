@@ -47,16 +47,16 @@ public class EditUserButton : MonoBehaviour
             switch(jsonEditUser.code)
             {
                 case "user_name_in_use":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: nome de usuário já em uso", panelMsg);
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Nome de usuário já está em uso", panelMsg);
                     break;
                 case "user_email_in_use":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: email já em uso", panelMsg);
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Email já está em uso", panelMsg);
                     break;
                 case "user_nothing_edited":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: você não editou nada", panelMsg);
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Você não editou nada", panelMsg);
                     break;
                 case "user_error_on_edit":
-                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: erro ao editar usuário", panelMsg);
+                    Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro ao editar usuário", panelMsg);
                     break;
                 case "param_filter_not_match":
                     Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro: email inválido", panelMsg);

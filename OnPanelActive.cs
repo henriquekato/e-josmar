@@ -45,7 +45,7 @@ public class OnPanelActive : MonoBehaviour
 
         if(requestRequestList.result == UnityWebRequest.Result.ConnectionError | requestRequestList.result == UnityWebRequest.Result.ProtocolError)
         {
-            Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Sem conexão");
+            Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Erro de conexão");
         }
         else
         {

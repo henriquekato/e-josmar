@@ -85,7 +85,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
             switch(jsonRequestUpdate.code)
             {
                 case "request_error_on_update_status":
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro: erro ao devolver a chave", PanelMsg:panelMsg, Connection: true, _Key:key);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro ao devolver a chave", PanelMsg:panelMsg, Connection: true, _Key:key);
                     break;
                 case "request_updated_status":
                     switch(IStatus)
