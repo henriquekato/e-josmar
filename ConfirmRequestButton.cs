@@ -27,12 +27,6 @@ public class ConfirmRequestButton : MonoBehaviour
 
     private RequestCreateJson jsonRequestCreate;
 
-    public void CancelRequest()
-    {
-        panelCoverConfirm.SetActive(false);
-        panelConfirm.SetActive(false);
-    }
-
     public void ConfirmRequest()
     {
         string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
