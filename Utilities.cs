@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class Utilities
 {
     public static string apiURL;
-    public static const string authURL = "/api/auth";
-    public static const string editUserURL = "/api/user/edit";
-    public static const string requestCreateURL = "/api/request/create";
-    public static const string requestUpdateStatusURL = "/api/request/update_status";
-    public static const string requestListURL = "/api/request/list";
-    public static const string requestGetURL = "/api/request/get";
+    public const string authURL = "/api/auth";
+    public const string editUserURL = "/api/user/edit";
+    public const string requestCreateURL = "/api/request/create";
+    public const string requestUpdateStatusURL = "/api/request/update_status";
+    public const string requestListURL = "/api/request/list";
+    public const string requestGetURL = "/api/request/get";
 
     public enum Status
     {
@@ -125,6 +125,18 @@ public class Utilities
         DpdRequestsList.value = 0;
         DpdRequestsList.RefreshShownValue();
         DpdRequestsList.interactable = true;
+    }
+
+    public static void UpdateDropdownAllRequests(Dropdown DpdRequestsList)
+    {
+        DpdRequestsList.options.Clear();
+        DpdRequestsList.options.Add(new Dropdown.OptionData("Pedidos"));
+        foreach(Key key in User.user.UserKeys)
+        {
+            DpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + key.requestId.ToString() + ", sala/lab " + key.roomNumber.ToString()));
+        }
+        DpdRequestsList.value = 0;
+        DpdRequestsList.RefreshShownValue();
     }
 
     public static void ClearFields(Dropdown[] Dropdowns = null, InputField[] InputFields = null, Text TxtMsg = null, GameObject PanelMsg = null)
