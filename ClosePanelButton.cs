@@ -9,7 +9,7 @@ public class ClosePanelButton : MonoBehaviour
     [SerializeField] GameObject panelCoverConfirm;
     [SerializeField] GameObject panelConfirm;
     [SerializeField] GameObject panelCoverAllRequests;
-    [SerializeField] GameObject panelAllRequest;
+    [SerializeField] GameObject panelAllRequests;
     [SerializeField] GameObject panelMsg;
 
     public void ClosePanel()
