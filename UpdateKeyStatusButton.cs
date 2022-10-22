@@ -67,7 +67,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         }
 
         WWWForm form = new WWWForm();
-        form.AddField("id", key.requestId);
+        form.AddField("id", key.requestId.ToString());
         form.AddField("status", sStatus);
         form.AddField("token", User.user.UserToken);
         
@@ -116,21 +116,21 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
     private IEnumerator GetGetKeyStatus(Key key, int IStatus)
     {
-        UnityWebRequest requestGetKeyStatus = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestGetURL + "?id=" + key.requestId + "&token=" + User.user.UserToken);
+        UnityWebRequest requestGetKeyStatus = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestGetURL + "?id=" + key.requestId.ToString() + "&token=" + User.user.UserToken);
         yield return requestGetKeyStatus.SendWebRequest();
 
         if(requestGetKeyStatus.result == UnityWebRequest.Result.ConnectionError | requestGetKeyStatus.result == UnityWebRequest.Result.ProtocolError)
         {
-            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro de conexão", panelMsg);
+            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro de conexão", PanelMsg:panelMsg);
         }
         else
         {
-            jsonRequestGet = JsonUtility.FromJson<RequestCreateJson>(requestGetKeyStatus.downloadHandler.text);
+            jsonRequestGet = JsonUtility.FromJson<RequestGetJson>(requestGetKeyStatus.downloadHandler.text);
 
             switch(jsonRequestGet.code)
             {
                 case "request_got":
-                    if(jsonRequestGet.status == "started")
+                    if(jsonRequestGet.request.status == "started")
                     {
                         int i = User.user.UserKeys.IndexOf(key);
                         User.user.UserKeys[i].status = (int)Utilities.Status.started;
