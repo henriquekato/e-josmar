@@ -50,7 +50,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.canceled));
     }
 
-    IEnumerator PostUpdateKeyStatus(Key key, int IStatus)
+    private IEnumerator PostUpdateKeyStatus(Key key, int IStatus)
     {
         string sStatus = "";
         switch(IStatus)
@@ -114,7 +114,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         }
     }
 
-    IEnumerator GetGetKeyStatus(Key key, int IStatus)
+    private IEnumerator GetGetKeyStatus(Key key, int IStatus)
     {
         UnityWebRequest requestGetKeyStatus = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestGetURL + "?id=" + key.requestId + "&token=" + User.user.UserToken);
         yield return requestGetKeyStatus.SendWebRequest();

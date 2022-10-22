@@ -38,7 +38,7 @@ public class OnPanelActive : MonoBehaviour
         StartCoroutine(GetKeyStatus(sKey, sDate));
     }
 
-    IEnumerator GetKeyStatus(string SKey, string SDate)
+    private IEnumerator GetKeyStatus(string SKey, string SDate)
     {
         UnityWebRequest requestRequestList = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestListURL + "?key=" + SKey + "&status=" + ((int)Utilities.Status.not_started).ToString() + "|" + ((int)Utilities.Status.started).ToString() + "&date_start=" + SDate + "&token=" + User.user.UserToken);
         yield return requestRequestList.SendWebRequest();

@@ -47,7 +47,7 @@ public class RequestKeyButton : MonoBehaviour
         StartCoroutine(GetRequestKey(sKey, sDateDay, sTimeStart, sTimeEnd));
     }
 
-    IEnumerator GetRequestKey(string SKey, string SDateDay, string STimeStart, string STimeEnd)
+    private IEnumerator GetRequestKey(string SKey, string SDateDay, string STimeStart, string STimeEnd)
     {
         UnityWebRequest requestRequestCreate = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestCreateURL + "?key=" + SKey + "&date_start=" + SDateDay + " " + STimeStart + "&date_end=" + SDateDay + " " + STimeEnd + "&token=" + User.user.UserToken);
         yield return requestRequestCreate.SendWebRequest();

@@ -27,7 +27,7 @@ public class AuthButton : MonoBehaviour
         StartCoroutine(GetAuth());
     }
 
-    IEnumerator GetAuth()
+    private IEnumerator GetAuth()
     {
         UnityWebRequest requestAuth = UnityWebRequest.Get(Utilities.apiURL + Utilities.authURL + "?login=" + inputUser.text + "&password=" + inputPassword.text);
         yield return requestAuth.SendWebRequest();
@@ -61,7 +61,7 @@ public class AuthButton : MonoBehaviour
         }
     }
 
-    IEnumerator GetLoadUserKeys()
+    private IEnumerator GetLoadUserKeys()
     {
         UnityWebRequest requestLoadUserKeys = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestListURL + "?status=" + ((int)Utilities.Status.not_started).ToString() + "|" + ((int)Utilities.Status.started).ToString() + "&date_start=" + DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00" + "&date_end=" + DateTime.Now.ToString("yyyy") + "-12-31 23:59:59" + "&token=" + User.user.UserToken);
         yield return requestLoadUserKeys.SendWebRequest();

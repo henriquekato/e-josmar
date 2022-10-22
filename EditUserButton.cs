@@ -23,7 +23,7 @@ public class EditUserButton : MonoBehaviour
         StartCoroutine(PostEditUser());
     }
     
-    IEnumerator PostEditUser()
+    private IEnumerator PostEditUser()
     {
         WWWForm form = new WWWForm();
         form.AddField("id", User.user.UserId);
