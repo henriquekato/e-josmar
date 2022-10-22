@@ -38,6 +38,19 @@ public class _list
 }
 
 [Serializable]
+public class RequestGetJson
+{
+    public string code;
+    public _request request;
+}
+
+[Serializable]
+public class _request
+{
+    public string status;
+}
+
+[Serializable]
 public class RequestUpdateJson
 {
     public string code;
