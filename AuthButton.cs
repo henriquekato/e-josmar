@@ -29,7 +29,7 @@ public class AuthButton : MonoBehaviour
 
     IEnumerator GetAuth()
     {
-        UnityWebRequest requestAuth = UnityWebRequest.Get(Utilities.apiURL + "/api/auth?login=" + inputUser.text + "&password=" + inputPassword.text);
+        UnityWebRequest requestAuth = UnityWebRequest.Get(Utilities.apiURL + Utilities.authURL + "?login=" + inputUser.text + "&password=" + inputPassword.text);
         yield return requestAuth.SendWebRequest();
 
         if(requestAuth.result == UnityWebRequest.Result.ConnectionError | requestAuth.result == UnityWebRequest.Result.ProtocolError)
@@ -63,7 +63,7 @@ public class AuthButton : MonoBehaviour
 
     IEnumerator GetLoadUserKeys()
     {
-        UnityWebRequest requestLoadUserKeys = UnityWebRequest.Get(Utilities.apiURL + "/api/request/list?user=" + User.user.UserId + "&status=" + ((int)Utilities.Status.not_started).ToString() + "|" + ((int)Utilities.Status.started).ToString() + "&date_start=" + DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00" + "&date_end=" + DateTime.Now.ToString("yyyy") + "-12-31 23:59:59" + "&token=" + User.user.UserToken);
+        UnityWebRequest requestLoadUserKeys = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestListURL + "?status=" + ((int)Utilities.Status.not_started).ToString() + "|" + ((int)Utilities.Status.started).ToString() + "&date_start=" + DateTime.Now.ToString("yyyy-MM-dd") + " 00:00:00" + "&date_end=" + DateTime.Now.ToString("yyyy") + "-12-31 23:59:59" + "&token=" + User.user.UserToken);
         yield return requestLoadUserKeys.SendWebRequest();
 
         if(requestLoadUserKeys.result == UnityWebRequest.Result.ConnectionError | requestLoadUserKeys.result == UnityWebRequest.Result.ProtocolError)

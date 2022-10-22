@@ -70,7 +70,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         form.AddField("status", sStatus);
         form.AddField("token", User.user.UserToken);
         
-        UnityWebRequest requestRequestUpdate = UnityWebRequest.Post(Utilities.apiURL + "/api/request/update_status", form);
+        UnityWebRequest requestRequestUpdate = UnityWebRequest.Post(Utilities.apiURL + Utilities.requestUpdateStatusURL, form);
         requestRequestUpdate.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         yield return requestRequestUpdate.SendWebRequest();
 

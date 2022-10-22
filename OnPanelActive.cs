@@ -40,7 +40,7 @@ public class OnPanelActive : MonoBehaviour
 
     IEnumerator GetKeyStatus(string SKey, string SDate)
     {
-        UnityWebRequest requestRequestList = UnityWebRequest.Get(Utilities.apiURL + "/api/request/list?user=" + User.user.UserId + "&key=" + SKey + "&status=" + ((int)Utilities.Status.not_started).ToString() + "|" + ((int)Utilities.Status.started).ToString() + "&date_start=" + SDate + "&token=" + User.user.UserToken);
+        UnityWebRequest requestRequestList = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestListURL + "?key=" + SKey + "&status=" + ((int)Utilities.Status.not_started).ToString() + "|" + ((int)Utilities.Status.started).ToString() + "&date_start=" + SDate + "&token=" + User.user.UserToken);
         yield return requestRequestList.SendWebRequest();
 
         if(requestRequestList.result == UnityWebRequest.Result.ConnectionError | requestRequestList.result == UnityWebRequest.Result.ProtocolError)

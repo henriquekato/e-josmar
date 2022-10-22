@@ -7,6 +7,12 @@ using UnityEngine.UI;
 public class Utilities
 {
     public static string apiURL;
+    public static const string authURL = "/api/auth";
+    public static const string editUserURL = "/api/user/edit";
+    public static const string requestCreateURL = "/api/request/create";
+    public static const string requestUpdateStatusURL = "/api/request/update_status";
+    public static const string requestListURL = "/api/request/list";
+    public static const string requestGetURL = "/api/request/get";
 
     public enum Status
     {

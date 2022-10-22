@@ -32,7 +32,7 @@ public class EditUserButton : MonoBehaviour
         if(inputEmail.text != "") form.AddField("email", inputEmail.text);
         if(inputPassword.text != "") form.AddField("password", inputPassword.text);
         
-        UnityWebRequest requestEditUser = UnityWebRequest.Post(Utilities.apiURL + "/api/user/edit", form);
+        UnityWebRequest requestEditUser = UnityWebRequest.Post(Utilities.apiURL + Utilities.editUserURL, form);
         requestEditUser.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         yield return requestEditUser.SendWebRequest();
 

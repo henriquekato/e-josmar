@@ -49,7 +49,7 @@ public class RequestKeyButton : MonoBehaviour
 
     IEnumerator GetRequestKey(string SKey, string SDateDay, string STimeStart, string STimeEnd)
     {
-        UnityWebRequest requestRequestCreate = UnityWebRequest.Get(Utilities.apiURL + "/api/request/create?user=" + User.user.UserId + "&key=" + SKey + "&date_start=" + SDateDay + " " + STimeStart + "&date_end=" + SDateDay + " " + STimeEnd + "&token=" + User.user.UserToken);
+        UnityWebRequest requestRequestCreate = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestCreateURL + "?key=" + SKey + "&date_start=" + SDateDay + " " + STimeStart + "&date_end=" + SDateDay + " " + STimeEnd + "&token=" + User.user.UserToken);
         yield return requestRequestCreate.SendWebRequest();
 
         if(requestRequestCreate.result == UnityWebRequest.Result.ConnectionError | requestRequestCreate.result == UnityWebRequest.Result.ProtocolError)
