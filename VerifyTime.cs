@@ -118,10 +118,13 @@ public class VerifyTime
         {
             int iTime;
             Int32.TryParse(STime, out iTime);
-            if(iTime > 24 | iTime < 0) return null;
-            else
+            if(STime != "00")
             {
-                if(iTime < 10) STime = "0" + STime;
+                if(iTime >= 24 | iTime < 0) return null;
+                else
+                {
+                    if(iTime < 10) STime = "0" + STime;
+                }
             }
             return STime;
         }
@@ -134,10 +137,13 @@ public class VerifyTime
         {
             int iTime;
             Int32.TryParse(STime, out iTime);
-            if(iTime > 60 | iTime < 0) return null;
-            else
+            if(STime != "00")
             {
-                if(iTime < 10) STime = "0" + STime;
+                if(iTime > 60 | iTime < 0) return null;
+                else
+                {
+                    if(iTime < 10) STime = "0" + STime;
+                }
             }
             return STime;
         }
