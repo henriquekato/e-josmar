@@ -33,9 +33,12 @@ public class ConfirmRequestButton : MonoBehaviour
     {
         Utilities.StartRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Carregando...", panelMsg);
         string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
-        string sTimeStart = txtTimeStart.text;
-        string sTimeEnd = txtTimeEnd.text;
-        string sDateDay = txtDateDay.text;
+        string sTimeStart = txtTimeStart.text.Substring(14, 8);
+        string sTimeEnd = txtTimeEnd.text.Substring(12, 8);
+        string sYear = txtDateDay.text.Substring(11, 4);
+        string sMonth = txtDateDay.text.Substring(8, 2);
+        string sDay = txtDateDay.text.Substring(5, 2);
+        string sDateDay = sYear + "-" + sMonth + "-" + sDay;
         StartCoroutine(GetRequestKey(sKey, sDateDay, sTimeStart, sTimeEnd));
     }
 
