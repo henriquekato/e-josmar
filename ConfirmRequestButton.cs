@@ -32,13 +32,10 @@ public class ConfirmRequestButton : MonoBehaviour
     public void ConfirmRequest()
     {
         Utilities.StartRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Carregando...", panelMsg);
-        string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
-        string sTimeStart = txtTimeStart.text.Substring(14, 8);
-        string sTimeEnd = txtTimeEnd.text.Substring(12, 8);
-        string sYear = txtDateDay.text.Substring(11, 4);
-        string sMonth = txtDateDay.text.Substring(8, 2);
-        string sDay = txtDateDay.text.Substring(5, 2);
-        string sDateDay = sYear + "-" + sMonth + "-" + sDay;
+        string sKey = User.currentKey.ToString();
+        string sTimeStart = User.currentTimeStart;
+        string sTimeEnd = User.currentTimeEnd;
+        string sDateDay = User.currentDateDay;
         StartCoroutine(GetRequestKey(sKey, sDateDay, sTimeStart, sTimeEnd));
     }
 
@@ -68,10 +65,7 @@ public class ConfirmRequestButton : MonoBehaviour
                     Utilities.EndRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Erro ao criar o pedido", panelMsg);
                     break;
                 case "request_created":
-                    string sRoomNumber = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6, 1) : txtThisRoom.text.Substring(13, 1);
-                    int iRoomNumber;
-                    Int32.TryParse(sRoomNumber, out iRoomNumber);
-                    User.user.UserKeys.Add(new Key(iRoomNumber, jsonRequestCreate.id, SDateDay + " " + STimeStart, SDateDay + " " + STimeEnd, (int)Utilities.Status.not_started));
+                    User.user.UserKeys.Add(new Key(User.currentKey, jsonRequestCreate.id, SDateDay + " " + STimeStart, SDateDay + " " + STimeEnd, (int)Utilities.Status.not_started));
 
                     dpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + jsonRequestCreate.id.ToString()));
                     dpdRequestsList.RefreshShownValue();
