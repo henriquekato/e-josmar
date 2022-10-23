@@ -57,14 +57,15 @@ public class Utilities
 
     public static void EndRequest(Button[] Buttons, Text TxtMsg, string Msg, GameObject PanelMsg = null, bool Success = false)
     {
-        TxtMsg.text = Msg;
         foreach(Button button in Buttons)
         {
             button.interactable = true;
         }
 
+        TxtMsg.text = Msg;
         if(!(PanelMsg is null))
         {
+            if(!(PanelMsg.activeInHierarchy)) PanelMsg.SetActive(true);
             Image panelImg = PanelMsg.GetComponent<Image>();
             panelImg.color = Success ? new Color(0, 255, 0, 210) : new Color(255, 0, 0, 210);
         }
