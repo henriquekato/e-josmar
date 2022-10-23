@@ -3,12 +3,12 @@ using UnityEngine.UI;
 
 public class CancelRequestButton : MonoBehaviour
 {
-    [SerializeField] GameObject panelCoverConfirm;
     [SerializeField] GameObject panelConfirm;
+    [SerializeField] GameObject panelRequest;
 
     public void CancelRequest()
     {
-        panelCoverConfirm.SetActive(false);
         panelConfirm.SetActive(false);
+        panelRequest.SetActive(true);
     }
 }

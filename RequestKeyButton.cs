@@ -7,6 +7,7 @@ using UnityEngine.Networking;
 
 public class RequestKeyButton : MonoBehaviour
 {
+    [SerializeField] GameObject panelRequest;
     [SerializeField] Text txtThisRoom;
     [SerializeField] Dropdown dpdStartTime;
     [SerializeField] InputField inputStartHour;
@@ -18,7 +19,6 @@ public class RequestKeyButton : MonoBehaviour
     [SerializeField] Button btnRequestKey;
     [SerializeField] GameObject panelMsg;
     [SerializeField] Text txtMsg;
-    [SerializeField] GameObject panelCoverConfirm;
     [SerializeField] GameObject panelConfirm;
     [SerializeField] Text txtNextRoom;
     [SerializeField] Text txtTimeStart;
@@ -27,8 +27,6 @@ public class RequestKeyButton : MonoBehaviour
 
     public void RequestKey()
     {
-        Utilities.StartRequest(new Button[] {btnRequestKey}, txtMsg, "Carregando...", panelMsg);
-
         string sTimeStart = VerifyTime.TimeStart(dpdStartTime, inputStartHour, inputStartMin);
         if(sTimeStart is null)
         {
@@ -48,11 +46,16 @@ public class RequestKeyButton : MonoBehaviour
         string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
 
         txtNextRoom.text = txtThisRoom.text.Substring(0, 1) == "S" ? "Sala: " + sKey : "Laboratório: " + sKey;
-        txtTimeStart.text = sTimeStart;
-        txtTimeEnd.text = sTimeEnd;
-        txtDateDay.text = sDateDay;
+        txtTimeStart.text = "Hora inicial: " + sTimeStart;
+        txtTimeEnd.text = "Hora final: " + sTimeEnd;
+        string sYear = sDateDay.Substring(0, 4);
+        string sMonth = sDateDay.Substring(5, 2);
+        string sDay = sDateDay.Substring(8, 2);
+        txtDateDay.text = "Dia: " + sDay + "/" + sMonth + "/" + sYear;
 
-        panelCoverConfirm.SetActive(true);
+        Utilities.ClearFields(TxtMsg:txtMsg, PanelMsg:panelMsg);
+
+        panelRequest.SetActive(false);
         panelConfirm.SetActive(true);
     }
 }

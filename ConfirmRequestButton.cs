@@ -7,15 +7,17 @@ using UnityEngine.Networking;
 
 public class ConfirmRequestButton : MonoBehaviour
 {
-    [SerializeField] GameObject panelCoverConfirm;
     [SerializeField] GameObject panelConfirm;
     [SerializeField] Text txtThisRoom;
     [SerializeField] Text txtTimeStart;
     [SerializeField] Text txtTimeEnd;
     [SerializeField] Text txtDateDay;
+    [SerializeField] Button btnConfirmRequest;
+    [SerializeField] Button btnCancelRequest;
+    [SerializeField] Button btnClose;
     [SerializeField] GameObject panelMsg;
     [SerializeField] Text txtMsg;
-    [SerializeField] Dropdown dpdRequestsList;
+    [SerializeField] GameObject panelRequest;
     [SerializeField] Dropdown dpdStartTime;
     [SerializeField] InputField inputStartHour;
     [SerializeField] InputField inputStartMin;
@@ -23,12 +25,13 @@ public class ConfirmRequestButton : MonoBehaviour
     [SerializeField] InputField inputEndHour;
     [SerializeField] InputField inputEndMin;
     [SerializeField] Dropdown dpdWeekDay;
-    [SerializeField] Button btnRequestKey;
+    [SerializeField] Dropdown dpdRequestsList;
 
     private RequestCreateJson jsonRequestCreate;
 
     public void ConfirmRequest()
     {
+        Utilities.StartRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Carregando...", panelMsg);
         string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
         string sTimeStart = txtTimeStart.text;
         string sTimeEnd = txtTimeEnd.text;
@@ -43,7 +46,7 @@ public class ConfirmRequestButton : MonoBehaviour
 
         if(requestRequestCreate.result == UnityWebRequest.Result.ConnectionError | requestRequestCreate.result == UnityWebRequest.Result.ProtocolError)
         {
-            Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro de conexão", panelMsg);
+            Utilities.EndRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Erro de conexão", panelMsg);
         }
         else
         {
@@ -53,13 +56,13 @@ public class ConfirmRequestButton : MonoBehaviour
             {
                 case "request_date_end_before_start":
                 case "request_date_end_before_now":
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro: data inválida", panelMsg);
+                    Utilities.EndRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Erro: data inválida", panelMsg);
                     break;
                 case "request_key_already_in_use":
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Essa chave já está sendo usada", panelMsg);
+                    Utilities.EndRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Essa chave já está sendo usada", panelMsg);
                     break;
                 case "request_error_on_create":
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro ao criar o pedido", panelMsg);
+                    Utilities.EndRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Erro ao criar o pedido", panelMsg);
                     break;
                 case "request_created":
                     string sRoomNumber = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6, 1) : txtThisRoom.text.Substring(13, 1);
@@ -70,17 +73,16 @@ public class ConfirmRequestButton : MonoBehaviour
                     dpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + jsonRequestCreate.id.ToString()));
                     dpdRequestsList.RefreshShownValue();
 
-                    panelCoverConfirm.SetActive(false);
-                    panelConfirm.SetActive(false);
-
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Pedido " + jsonRequestCreate.id + " feito com sucesso", panelMsg, true);
+                    Utilities.EndRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Pedido " + jsonRequestCreate.id + " feito com sucesso", panelMsg, true);
 
                     Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
                     break;
                 default:
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtMsg, "Erro inesperado: " + jsonRequestCreate.code, panelMsg);
+                    Utilities.EndRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Erro inesperado: " + jsonRequestCreate.code, panelMsg);
                     break;
             }
         }
+        panelConfirm.SetActive(false);
+        panelRequest.SetActive(true);
     }
 }

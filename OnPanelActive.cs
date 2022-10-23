@@ -10,12 +10,6 @@ public class OnPanelActive : MonoBehaviour
     [SerializeField] Text txtThisRoom;
     [SerializeField] Text txtHolder;
     [SerializeField] Button btnRequestKey;
-    [SerializeField] Dropdown dpdStartTime;
-    [SerializeField] InputField inputStartHour;
-    [SerializeField] InputField inputStartMin;
-    [SerializeField] Dropdown dpdEndTime;
-    [SerializeField] InputField inputEndHour;
-    [SerializeField] InputField inputEndMin;
     [SerializeField] Dropdown dpdWeekDay;
     [SerializeField] Dropdown dpdRequestsList;
     [SerializeField] GameObject panelMsg;
@@ -28,8 +22,6 @@ public class OnPanelActive : MonoBehaviour
         string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
         Utilities.UpdateDropdownList(dpdRequestsList, sKey);
         VerifyTime.UpdateDpdWeekDays(dpdWeekDay);
-
-        Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin}, TxtMsg:txtMsg, PanelMsg:panelMsg);
 
         Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações...");
 
