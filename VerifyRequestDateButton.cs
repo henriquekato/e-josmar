@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
-public class RequestKeyButton : MonoBehaviour
+public class VerifyRequestDateButton : MonoBehaviour
 {
     [SerializeField] GameObject panelRequest;
     [SerializeField] Text txtThisRoom;
@@ -25,7 +25,7 @@ public class RequestKeyButton : MonoBehaviour
     [SerializeField] Text txtTimeEnd;
     [SerializeField] Text txtDateDay;
 
-    public void RequestKey()
+    public void VerifyRequestDate()
     {
         string sTimeStart = VerifyTime.TimeStart(dpdStartTime, inputStartHour, inputStartMin);
         if(sTimeStart is null)
@@ -43,15 +43,18 @@ public class RequestKeyButton : MonoBehaviour
 
         string sDateDay = VerifyTime.VerifyDpdWeekDay(dpdWeekDay);
 
-        string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
+        string sKey = User.currentKey.ToString();
 
-        txtNextRoom.text = txtThisRoom.text.Substring(0, 1) == "S" ? "Sala: " + sKey : "Laboratório: " + sKey;
+        txtNextRoom.text = txtThisRoom.text;
         txtTimeStart.text = "Hora inicial: " + sTimeStart;
         txtTimeEnd.text = "Hora final: " + sTimeEnd;
         string sYear = sDateDay.Substring(0, 4);
         string sMonth = sDateDay.Substring(5, 2);
         string sDay = sDateDay.Substring(8, 2);
         txtDateDay.text = "Dia: " + sDay + "/" + sMonth + "/" + sYear;
+        User.currentTimeStart = sTimeStart;
+        User.currentTimeEnd = sTimeEnd;
+        User.currentDateDay = sDateDay;
 
         Utilities.ClearFields(TxtMsg:txtMsg, PanelMsg:panelMsg);
 

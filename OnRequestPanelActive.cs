@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 
-public class OnPanelActive : MonoBehaviour
+public class OnRequestPanelActive : MonoBehaviour
 {
     [SerializeField] Text txtThisRoom;
     [SerializeField] Text txtHolder;
@@ -19,20 +19,20 @@ public class OnPanelActive : MonoBehaviour
 
     void OnEnable()
     {
-        string sKey = txtThisRoom.text.Substring(0, 1) == "S" ? txtThisRoom.text.Substring(6) : txtThisRoom.text.Substring(13);
-        Utilities.UpdateDropdownList(dpdRequestsList, sKey);
+        int iKey = User.currentKey;
+        Utilities.UpdateDropdownRoomRequests(dpdRequestsList, iKey);
         VerifyTime.UpdateDpdWeekDays(dpdWeekDay);
 
         Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações...");
 
-        string sDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        string sDateNow = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-        StartCoroutine(GetKeyStatus(sKey, sDate));
+        StartCoroutine(GetKeyStatus(iKey, sDateNow));
     }
 
-    private IEnumerator GetKeyStatus(string SKey, string SDate)
+    private IEnumerator GetKeyStatus(int IKey, string SDateNow)
     {
-        UnityWebRequest requestRequestList = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestListURL + "?key=" + SKey + "&status=" + ((int)Utilities.Status.not_started).ToString() + "|" + ((int)Utilities.Status.started).ToString() + "&date_start=" + SDate + "&token=" + User.user.UserToken);
+        UnityWebRequest requestRequestList = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestListURL + "?key=" + IKey.ToString() + "&status=" + ((int)Utilities.Status.not_started).ToString() + "|" + ((int)Utilities.Status.started).ToString() + "&date_start=" + SDateNow + "&token=" + User.user.UserToken);
         yield return requestRequestList.SendWebRequest();
 
         if(requestRequestList.result == UnityWebRequest.Result.ConnectionError | requestRequestList.result == UnityWebRequest.Result.ProtocolError)

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OpenPanelDropdown : MonoBehaviour
+public class OpenUpdatePanelDropdown : MonoBehaviour
 {
     [SerializeField] GameObject panelRequest;
     [SerializeField] GameObject panelUpdateRequest;
@@ -24,11 +24,11 @@ public class OpenPanelDropdown : MonoBehaviour
 
     public void OnRequestSelected()
     {
-        if(dpdRequestsList.interactable == true)
+        if(dpdRequestsList.interactable)
         {
             Key key = Utilities.WhichRequest(dpdRequestsList);
 
-            txtNextRoom.text = txtThisRoom.text.Substring(0, 1) == "S" ? "Sala: " + key.roomNumber.ToString() : "Laboratório: " + key.roomNumber.ToString();
+            txtNextRoom.text = txtThisRoom.text;
             txtRequestId.text = "Pedido " + key.requestId.ToString();
 
             string sStatus = "";

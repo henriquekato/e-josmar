@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OpenPanelButton : MonoBehaviour
+public class OpenRequestPanelButton : MonoBehaviour
 {
     [SerializeField] GameObject panelCover;
     [SerializeField] GameObject panelRequest;
@@ -18,9 +18,10 @@ public class OpenPanelButton : MonoBehaviour
     [SerializeField] InputField inputEndMin;
     [SerializeField] Dropdown dpdWeekDay;
 
-    public void OpenPanel()
+    public void OpenRequestPanel()
     {
         string sKey = txtThisRoom.text.Substring(1);
+        Int32.TryParse(sKey, out User.currentKey);
         txtNextRoom.text = txtThisRoom.text.Substring(0, 1) == "S" ? "Sala: " + sKey : "Laboratório: " + sKey;
 
         Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
