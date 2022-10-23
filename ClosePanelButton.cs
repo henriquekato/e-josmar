@@ -10,6 +10,7 @@ public class ClosePanelButton : MonoBehaviour
     [SerializeField] GameObject panelCoverAllRequests;
     [SerializeField] GameObject panelAllRequests;
     [SerializeField] GameObject panelMsg;
+    [SerializeField] Text txtMsg;
 
     public void ClosePanel()
     {
@@ -19,6 +20,6 @@ public class ClosePanelButton : MonoBehaviour
         panelUpdateRequest.SetActive(false);
         panelCoverAllRequests.SetActive(false);
         panelAllRequests.SetActive(false);
-        panelMsg.SetActive(false);
+        Utilities.ClearFields(TxtMsg:txtMsg, PanelMsg:panelMsg);
     }
 }
