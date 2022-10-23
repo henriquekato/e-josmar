@@ -13,6 +13,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
     [SerializeField] Button btnStart;
     [SerializeField] Button btnCancel;
     [SerializeField] Button btnReturnKey;
+    [SerializeField] Button btnClose;
     [SerializeField] GameObject panelMsg;
     [SerializeField] Text txtMsg;
 
@@ -21,7 +22,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
     public void UpdateKeyStatusToStart()
     {
-        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando...", panelMsg);
+        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey, btnClose}, txtMsg, "Carregando...", panelMsg);
 
         Key key = Utilities.WhichRequest(dpdRequestsList);
         
@@ -31,21 +32,21 @@ public class UpdateKeyStatusButton : MonoBehaviour
         }
         else
         {
-            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "A hora do seu pedido ainda não chegou", PanelMsg:panelMsg, Connection:true, _Key:key);
+            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "A hora do seu pedido ainda não chegou", PanelMsg:panelMsg, Connection:true, _Key:key);
             return;
         }
     }
 
     public void UpdateKeyStatusToEnded()
     {
-        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando...", panelMsg);
+        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey, btnClose}, txtMsg, "Carregando...", panelMsg);
         Key key = Utilities.WhichRequest(dpdRequestsList);
         StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.end_request));
     }
 
     public void UpdateKeyStatusToCancel()
     {
-        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey}, txtMsg, "Carregando...", panelMsg);
+        Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey, btnClose}, txtMsg, "Carregando...", panelMsg);
         Key key = Utilities.WhichRequest(dpdRequestsList);
         StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.canceled));
     }
@@ -77,7 +78,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
         if(requestRequestUpdate.result == UnityWebRequest.Result.ConnectionError | requestRequestUpdate.result == UnityWebRequest.Result.ProtocolError)
         {
-            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro de conexão", PanelMsg:panelMsg);
+            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro de conexão", PanelMsg:panelMsg);
         }
         else
         {
@@ -86,7 +87,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
             switch(jsonRequestUpdate.code)
             {
                 case "request_error_on_update_status":
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro ao atualizar status do pedido", PanelMsg:panelMsg, Connection: true, _Key:key);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro ao atualizar status do pedido", PanelMsg:panelMsg, Connection: true, _Key:key);
                     break;
                 case "request_updated_status":
                     switch(IStatus)
@@ -98,17 +99,17 @@ public class UpdateKeyStatusButton : MonoBehaviour
                         case (int)Utilities.Status.end_request:
                             User.user.UserKeys.Remove(key);
 
-                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave devolvida com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
+                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave devolvida com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
                             break;
                         case (int)Utilities.Status.canceled:
                             User.user.UserKeys.Remove(key);
 
-                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Pedido cancelado com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
+                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Pedido cancelado com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
                             break;
                     }
                     break;
                 default:
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro inesperado: " + jsonRequestUpdate.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestUpdate.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
                     break;
             }
         }
@@ -121,7 +122,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
         if(requestGetKeyStatus.result == UnityWebRequest.Result.ConnectionError | requestGetKeyStatus.result == UnityWebRequest.Result.ProtocolError)
         {
-            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro de conexão", PanelMsg:panelMsg);
+            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro de conexão", PanelMsg:panelMsg);
         }
         else
         {
@@ -135,7 +136,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
                         int i = User.user.UserKeys.IndexOf(key);
                         User.user.UserKeys[i].status = (int)Utilities.Status.started;
 
-                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Chave liberada com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
+                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave liberada com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
                     }
                     else
                     {
@@ -143,7 +144,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     }
                     break;
                 default:
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, txtMsg, "Erro inesperado: " + jsonRequestGet.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestGet.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
                     break;
             }
         }
