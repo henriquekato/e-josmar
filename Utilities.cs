@@ -24,22 +24,6 @@ public class Utilities
         canceled = 6
     }
 
-    public static Key WhichRequest(Dropdown DpdRequestsList)
-    {
-        string sId = (DpdRequestsList.options[DpdRequestsList.value].text).Substring(7);
-
-        int keyIndex = 0;
-        for(int i = 0; i < User.user.UserKeys.Count; i++)
-        {
-            if(sId == User.user.UserKeys[i].requestId.ToString())
-            {
-                keyIndex = i;
-                break;
-            }
-        }
-        return User.user.UserKeys[keyIndex];
-    }
-
     public static void StartRequest(Button[] Buttons, Text TxtMsg, string Msg, GameObject PanelMsg = null)
     {
         if(!(PanelMsg is null)) 
@@ -61,7 +45,6 @@ public class Utilities
         {
             button.interactable = true;
         }
-
         TxtMsg.text = Msg;
         if(!(PanelMsg is null))
         {
@@ -71,11 +54,12 @@ public class Utilities
         }
     }
 
-    public static void EndUpdateRequest(Button BtnReturn, Button BtnStart, Button BtnCancel, Button BtnReturnKey, Text TxtMsg, string Msg, Text TxtStatus = null, GameObject PanelMsg = null, bool Connection = false, bool Success = false, int Status = 0, Key _Key = null)
+    public static void EndUpdateRequest(Button BtnReturn, Button BtnStart, Button BtnCancel, Button BtnReturnKey, Button BtnClose, Text TxtMsg, string Msg, Text TxtStatus = null, GameObject PanelMsg = null, bool Connection = false, bool Success = false, int Status = 0, Key _Key = null)
     {
         TxtMsg.text = Msg;
 
         BtnReturn.interactable = true;
+        BtnClose.interactable = true;
 
         if(!(PanelMsg is null))
         {
@@ -111,38 +95,8 @@ public class Utilities
         }
     }
 
-    public static void UpdateDropdownList(Dropdown DpdRequestsList, string SKey)
-    {
-        DpdRequestsList.interactable = false;
-        DpdRequestsList.options.Clear();
-        DpdRequestsList.options.Add(new Dropdown.OptionData("Pedidos"));
-        foreach(Key key in User.user.UserKeys)
-        {
-            if(key.roomNumber.ToString() == SKey)
-            {
-                DpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + key.requestId.ToString()));
-            }
-        }
-        DpdRequestsList.value = 0;
-        DpdRequestsList.RefreshShownValue();
-        DpdRequestsList.interactable = true;
-    }
-
-    public static void UpdateDropdownAllRequests(Dropdown DpdRequestsList)
-    {
-        DpdRequestsList.options.Clear();
-        DpdRequestsList.options.Add(new Dropdown.OptionData("Pedidos"));
-        foreach(Key key in User.user.UserKeys)
-        {
-            DpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + key.requestId.ToString() + ", sala/lab " + key.roomNumber.ToString()));
-        }
-        DpdRequestsList.value = 0;
-        DpdRequestsList.RefreshShownValue();
-    }
-
     public static void ClearFields(Dropdown[] Dropdowns = null, InputField[] InputFields = null, Text TxtMsg = null, GameObject PanelMsg = null)
     {
-
         if(!(Dropdowns is null))
         {
             foreach(Dropdown dpd in Dropdowns)
@@ -171,5 +125,53 @@ public class Utilities
             Image PanelImg = PanelMsg.GetComponent<Image>();
             PanelImg.color = new Color(140, 140, 140, 80);
         }
+    }
+
+    public static Key WhichRequest(Dropdown DpdRequestsList)
+    {
+        string sId = (DpdRequestsList.options[DpdRequestsList.value].text).Substring(7);
+        int keyIndex = 0;
+        for(int i = 0; i < User.user.UserKeys.Count; i++)
+        {
+            if(sId == User.user.UserKeys[i].requestId.ToString())
+            {
+                keyIndex = i;
+                break;
+            }
+        }
+        return User.user.UserKeys[keyIndex];
+    }
+
+    public static void UpdateDropdownRoomRequests(Dropdown DpdRequestsList, int IKey)
+    {
+        DpdRequestsList.interactable = false;
+        DpdRequestsList.options.Clear();
+        DpdRequestsList.options.Add(new Dropdown.OptionData("Pedidos"));
+        foreach(Key key in User.user.UserKeys)
+        {
+            if(key.roomNumber == IKey)
+            {
+                DpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + key.requestId.ToString()));
+            }
+        }
+        DpdRequestsList.value = 0;
+        DpdRequestsList.RefreshShownValue();
+        DpdRequestsList.interactable = true;
+    }
+
+    public static void UpdateDropdownAllRequests(Dropdown DpdRequestsList)
+    {
+        DpdRequestsList.interactable = false;
+        DpdRequestsList.options.Clear();
+        DpdRequestsList.options.Add(new Dropdown.OptionData("Pedidos"));
+        foreach(Key key in User.user.UserKeys)
+        {
+            string sMonth = key.dateStart.Substring(5, 2);
+            string sDay = key.dateStart.Substring(8, 2);
+            DpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + key.requestId.ToString() + ", sala/lab " + key.roomNumber.ToString() + ", dia: " + sDay + "/" + sMonth));
+        }
+        DpdRequestsList.value = 0;
+        DpdRequestsList.RefreshShownValue();
+        DpdRequestsList.interactable = true;
     }
 }
