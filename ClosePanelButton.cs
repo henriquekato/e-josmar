@@ -7,7 +7,6 @@ public class ClosePanelButton : MonoBehaviour
     [SerializeField] GameObject panelRequest;
     [SerializeField] GameObject panelConfirm;
     [SerializeField] GameObject panelUpdateRequest;
-    [SerializeField] GameObject panelCoverAllRequests;
     [SerializeField] GameObject panelAllRequests;
     [SerializeField] GameObject panelMsg;
     [SerializeField] Text txtMsg;
@@ -18,7 +17,6 @@ public class ClosePanelButton : MonoBehaviour
         panelRequest.SetActive(false);
         panelConfirm.SetActive(false);
         panelUpdateRequest.SetActive(false);
-        panelCoverAllRequests.SetActive(false);
         panelAllRequests.SetActive(false);
         Utilities.ClearFields(TxtMsg:txtMsg, PanelMsg:panelMsg);
     }
