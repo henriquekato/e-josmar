@@ -52,7 +52,6 @@ public class OpenPanelDropdown : MonoBehaviour
             txtStatus.text = "Status: " + sStatus;
             txtTimeStart.text = "Hora inicial: " + key.dateStart.Substring(11);
             txtTimeEnd.text = "Hora final: " + key.dateEnd.Substring(11);
-
             string sYear = key.dateStart.Substring(0, 4);
             string sMonth = key.dateStart.Substring(5, 2);
             string sDay = key.dateStart.Substring(8, 2);
