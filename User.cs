@@ -13,3 +13,15 @@ public class User
     public static string currentTimeEnd;
     public static string currentDateDay;
 }
+
+public class UserData
+{
+    public int id;
+    public string token;
+
+    public UserData(int id, string token)
+    {
+        this.id = id;
+        this.token = token;
+    }
+}

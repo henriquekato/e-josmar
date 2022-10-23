@@ -51,6 +51,7 @@ public class AuthButton : MonoBehaviour
                 case "api_auth":
                     User.user.UserId = jsonAuth.id;
                     User.user.UserToken = jsonAuth.token;
+                    SaveSystem.SaveUser(new UserData(jsonAuth.id, jsonAuth.token));
                     Utilities.StartRequest(new Button[] {btnLogin}, txtMsg, "Carregando chaves...");
                     StartCoroutine(GetLoadUserKeys());
                     break;
