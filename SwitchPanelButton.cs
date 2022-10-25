@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class SwitchPanelButton : MonoBehaviour
 {
     [SerializeField] GameObject panelRequest;
-    [SerializeField] GameObject panelThis;
+    [SerializeField] GameObject panelUpdateRequest;
     [SerializeField] Text txtThisRoom;
     [SerializeField] Text txtNextRoom;
     [SerializeField] Dropdown dpdStartTime;
@@ -24,7 +24,7 @@ public class SwitchPanelButton : MonoBehaviour
 
         Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
         
-        panelThis.SetActive(false);
+        panelUpdateRequest.SetActive(false);
         panelRequest.SetActive(true);
     }
 }
