@@ -17,6 +17,8 @@ public class OpenRequestPanelButton : MonoBehaviour
     [SerializeField] InputField inputEndHour;
     [SerializeField] InputField inputEndMin;
     [SerializeField] Dropdown dpdWeekDay;
+    [SerializeField] GameObject panelMsg;
+    [SerializeField] Text txtMsg;
 
     public void OpenRequestPanel()
     {
@@ -25,7 +27,7 @@ public class OpenRequestPanelButton : MonoBehaviour
 
         txtNextRoom.text = txtThisRoom.text.Substring(0, 1) == "S" ? "Sala: " + Utilities.currentKey.ToString() : "Laboratório: " + Utilities.currentKey.ToString();
 
-        Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
+        Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin}, TxtMsg:txtMsg, PanelMsg:panelMsg);
 
         panelCover.SetActive(true);
         panelRequest.SetActive(true);
