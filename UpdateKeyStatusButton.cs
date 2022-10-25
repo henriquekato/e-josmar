@@ -18,7 +18,8 @@ public class UpdateKeyStatusButton : MonoBehaviour
     [SerializeField] Text txtMsg;
 
     private RequestUpdateJson jsonRequestUpdate;
-    private RequestGetJson jsonRequestGet;
+    private RequestGetJson jsonRequestGetStarted;
+    private RequestGetJson jsonRequestGetEnded;
 
     public void UpdateKeyStatusToStart()
     {
@@ -94,12 +95,11 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     {
                         case (int)Utilities.Status.start_request:
                             txtMsg.text = "Liberando chave...";
-                            StartCoroutine(GetGetKeyStatus(key, IStatus));
+                            StartCoroutine(GetStartedKeyStatus(key, IStatus));
                             break;
                         case (int)Utilities.Status.end_request:
-                            User.user.UserKeys.Remove(key);
-
-                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave devolvida com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
+                            txtMsg.text = "Devolvendo chave...";
+                            StartCoroutine(GetEndedKeyStatus(key, IStatus));
                             break;
                         case (int)Utilities.Status.canceled:
                             User.user.UserKeys.Remove(key);
@@ -115,7 +115,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         }
     }
 
-    private IEnumerator GetGetKeyStatus(Key key, int IStatus)
+    private IEnumerator GetStartedKeyStatus(Key key, int IStatus)
     {
         UnityWebRequest requestGetKeyStatus = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestGetURL + "?id=" + key.requestId.ToString() + "&token=" + User.user.UserToken);
         yield return requestGetKeyStatus.SendWebRequest();
@@ -126,12 +126,12 @@ public class UpdateKeyStatusButton : MonoBehaviour
         }
         else
         {
-            jsonRequestGet = JsonUtility.FromJson<RequestGetJson>(requestGetKeyStatus.downloadHandler.text);
+            jsonRequestGetStarted = JsonUtility.FromJson<RequestGetJson>(requestGetKeyStatus.downloadHandler.text);
 
-            switch(jsonRequestGet.code)
+            switch(jsonRequestGetStarted.code)
             {
                 case "request_got":
-                    if(jsonRequestGet.request.status == "started")
+                    if(jsonRequestGetStarted.request.status == "started")
                     {
                         int i = User.user.UserKeys.IndexOf(key);
                         User.user.UserKeys[i].status = (int)Utilities.Status.started;
@@ -140,11 +140,47 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     }
                     else
                     {
-                        StartCoroutine(GetGetKeyStatus(key, IStatus));
+                        yield return new WaitForSeconds(5);
+                        StartCoroutine(GetStartedKeyStatus(key, IStatus));
                     }
                     break;
                 default:
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestGet.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestGetStarted.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
+                    break;
+            }
+        }
+    }
+
+    private IEnumerator GetEndedKeyStatus(Key key, int IStatus)
+    {
+        UnityWebRequest requestGetKeyStatus = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestGetURL + "?id=" + key.requestId.ToString() + "&token=" + User.user.UserToken);
+        yield return requestGetKeyStatus.SendWebRequest();
+
+        if(requestGetKeyStatus.result == UnityWebRequest.Result.ConnectionError | requestGetKeyStatus.result == UnityWebRequest.Result.ProtocolError)
+        {
+            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro de conexão", PanelMsg:panelMsg);
+        }
+        else
+        {
+            jsonRequestGetEnded = JsonUtility.FromJson<RequestGetJson>(requestGetKeyStatus.downloadHandler.text);
+
+            switch(jsonRequestGetEnded.code)
+            {
+                case "request_got":
+                    if(jsonRequestGetEnded.request.status == "ended")
+                    {
+                        User.user.UserKeys.Remove(key);
+
+                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave devolvida com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(5);
+                        StartCoroutine(GetEndedKeyStatus(key, IStatus));
+                    }
+                    break;
+                default:
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestGetEnded.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
                     break;
             }
         }
