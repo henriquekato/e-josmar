@@ -21,8 +21,9 @@ public class OpenRequestPanelButton : MonoBehaviour
     public void OpenRequestPanel()
     {
         string sKey = txtThisRoom.text.Substring(1);
-        Int32.TryParse(sKey, out User.currentKey);
-        txtNextRoom.text = txtThisRoom.text.Substring(0, 1) == "S" ? "Sala: " + User.currentKey.ToString() : "Laboratório: " + User.currentKey.ToString();
+        Int32.TryParse(sKey, out Utilities.currentKey);
+
+        txtNextRoom.text = txtThisRoom.text.Substring(0, 1) == "S" ? "Sala: " + Utilities.currentKey.ToString() : "Laboratório: " + Utilities.currentKey.ToString();
 
         Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
 

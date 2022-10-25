@@ -43,8 +43,6 @@ public class VerifyRequestDateButton : MonoBehaviour
 
         string sDateDay = VerifyTime.VerifyDpdWeekDay(dpdWeekDay);
 
-        string sKey = User.currentKey.ToString();
-
         txtNextRoom.text = txtThisRoom.text;
         txtTimeStart.text = "Hora inicial: " + sTimeStart;
         txtTimeEnd.text = "Hora final: " + sTimeEnd;
@@ -52,9 +50,9 @@ public class VerifyRequestDateButton : MonoBehaviour
         string sMonth = sDateDay.Substring(5, 2);
         string sDay = sDateDay.Substring(8, 2);
         txtDateDay.text = "Dia: " + sDay + "/" + sMonth + "/" + sYear;
-        User.currentTimeStart = sTimeStart;
-        User.currentTimeEnd = sTimeEnd;
-        User.currentDateDay = sDateDay;
+        Utilities.currentTimeStart = sTimeStart;
+        Utilities.currentTimeEnd = sTimeEnd;
+        Utilities.currentDateDay = sDateDay;
 
         Utilities.ClearFields(TxtMsg:txtMsg, PanelMsg:panelMsg);
 
