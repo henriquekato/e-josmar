@@ -67,7 +67,7 @@ public class Utilities
         }
     }
 
-    public static void EndUpdateRequest(Button BtnReturn, Button BtnStart, Button BtnCancel, Button BtnReturnKey, Button BtnClose, Text TxtMsg, string Msg, Text TxtStatus = null, GameObject PanelMsg = null, bool Connection = false, bool Success = false, int Status = 0, Key _Key = null)
+    public static void EndUpdateRequest(Button BtnReturn, Button BtnStart, Button BtnCancel, Button BtnReturnKey, Button BtnClose, Text TxtMsg, string Msg, Text TxtStatus = null, GameObject PanelMsg = null, bool Connection = false, bool Success = false, string Status = "", Key _Key = null)
     {
         TxtMsg.text = Msg;
 
@@ -83,24 +83,24 @@ public class Utilities
         {
             if(Success)
             {
-                if(Status == (int)Utilities.Status.start_request)
+                if(Status == Utilities.Status.start_request.ToString())
                 {
                     TxtStatus.text = "Status: em uso";
                     BtnReturnKey.interactable = true;
                 }
-                else if(Status == (int)Utilities.Status.canceled | Status == (int)Utilities.Status.end_request)
+                else if(Status == Utilities.Status.canceled.ToString() | Status == Utilities.Status.end_request.ToString())
                 {
                     TxtStatus.text = "Status: finalizado";
                 }
             }
             else
             {
-                if(_Key.status == (int)Utilities.Status.not_started)
+                if(_Key.status == Utilities.Status.not_started.ToString())
                 {
                     BtnStart.interactable = true;
                     BtnCancel.interactable = true;
                 }
-                else if(_Key.status == (int)Utilities.Status.started)
+                else if(_Key.status == Utilities.Status.started.ToString())
                 {
                     BtnReturnKey.interactable = true;
                 }
@@ -179,9 +179,7 @@ public class Utilities
         DpdRequestsList.options.Add(new Dropdown.OptionData("Pedidos"));
         foreach(Key key in User.user.UserKeys)
         {
-            string sMonth = key.dateStart.Substring(5, 2);
-            string sDay = key.dateStart.Substring(8, 2);
-            DpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + key.requestId.ToString() + ", sala/lab " + key.roomNumber.ToString() + ", dia: " + sDay + "/" + sMonth));
+            DpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + key.requestId.ToString()));
         }
         DpdRequestsList.value = 0;
         DpdRequestsList.RefreshShownValue();

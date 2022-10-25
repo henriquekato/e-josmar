@@ -29,7 +29,7 @@ public class _list
 {
     public int id;
     public int key;
-    public int status;
+    public string status;
     public string date_expected_start;
     public string date_expected_end;
     public string user_name;

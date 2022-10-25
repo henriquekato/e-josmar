@@ -32,22 +32,21 @@ public class OpenUpdatePanelDropdown : MonoBehaviour
             txtRequestId.text = "Pedido " + key.requestId.ToString();
 
             string sStatus = "";
-            switch(key.status)
+            if(key.status == Utilities.Status.not_started.ToString())
             {
-                case (int)Utilities.Status.not_started:
-                    sStatus = "não começado";
+                sStatus = "não começado";
 
-                    btnStart.interactable = true;
-                    btnCancel.interactable = true;
-                    btnReturnKey.interactable = false;
-                    break;
-                case (int)Utilities.Status.started:
-                    sStatus = "em uso";
+                btnStart.interactable = true;
+                btnCancel.interactable = true;
+                btnReturnKey.interactable = false;
+            }
+            else if(key.status == Utilities.Status.started.ToString())
+            {
+                sStatus = "em uso";
 
-                    btnStart.interactable = false;
-                    btnCancel.interactable = false;
-                    btnReturnKey.interactable = true;
-                    break;
+                btnStart.interactable = false;
+                btnCancel.interactable = false;
+                btnReturnKey.interactable = true;
             }
             txtStatus.text = "Status: " + sStatus;
             txtTimeStart.text = "Hora inicial: " + key.dateStart.Substring(11);

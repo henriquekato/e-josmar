@@ -4,9 +4,9 @@ public class Key
     public int requestId;
     public string dateStart;
     public string dateEnd;
-    public int status;
+    public string status;
 
-    public Key(int roomNumber, int requestId, string dateStart, string dateEnd, int status)
+    public Key(int roomNumber, int requestId, string dateStart, string dateEnd, string status)
     {
         this.roomNumber = roomNumber;
         this.requestId = requestId;

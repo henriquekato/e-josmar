@@ -29,7 +29,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         
         if(VerifyTime.TimeOk(key))
         {
-            StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.start_request));
+            StartCoroutine(PostUpdateKeyStatus(key, Utilities.Status.start_request.ToString()));
         }
         else
         {
@@ -42,35 +42,21 @@ public class UpdateKeyStatusButton : MonoBehaviour
     {
         Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey, btnClose}, txtMsg, "Carregando...", panelMsg);
         Key key = Utilities.WhichRequest(dpdRequestsList);
-        StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.end_request));
+        StartCoroutine(PostUpdateKeyStatus(key, Utilities.Status.end_request.ToString()));
     }
 
     public void UpdateKeyStatusToCancel()
     {
         Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey, btnClose}, txtMsg, "Carregando...", panelMsg);
         Key key = Utilities.WhichRequest(dpdRequestsList);
-        StartCoroutine(PostUpdateKeyStatus(key, (int)Utilities.Status.canceled));
+        StartCoroutine(PostUpdateKeyStatus(key, Utilities.Status.canceled.ToString()));
     }
 
-    private IEnumerator PostUpdateKeyStatus(Key key, int IStatus)
+    private IEnumerator PostUpdateKeyStatus(Key key, string SStatus)
     {
-        string sStatus = "";
-        switch(IStatus)
-        {
-            case (int)Utilities.Status.start_request:
-                sStatus = "start_request";
-                break;
-            case (int)Utilities.Status.end_request:
-                sStatus = "end_request";
-                break;
-            case (int)Utilities.Status.canceled:
-                sStatus = "canceled";
-                break;
-        }
-
         WWWForm form = new WWWForm();
         form.AddField("id", key.requestId.ToString());
-        form.AddField("status", sStatus);
+        form.AddField("status", SStatus);
         form.AddField("token", User.user.UserToken);
         
         UnityWebRequest requestRequestUpdate = UnityWebRequest.Post(Utilities.apiURL + Utilities.requestUpdateStatusURL, form);
@@ -91,21 +77,24 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro ao atualizar status do pedido", PanelMsg:panelMsg, Connection: true, _Key:key);
                     break;
                 case "request_updated_status":
-                    switch(IStatus)
+                    int i = User.user.UserKeys.IndexOf(key);
+                    if(SStatus == Utilities.Status.start_request.ToString())
                     {
-                        case (int)Utilities.Status.start_request:
-                            txtMsg.text = "Liberando chave...";
-                            StartCoroutine(GetStartedKeyStatus(key, IStatus));
-                            break;
-                        case (int)Utilities.Status.end_request:
-                            txtMsg.text = "Devolvendo chave...";
-                            StartCoroutine(GetEndedKeyStatus(key, IStatus));
-                            break;
-                        case (int)Utilities.Status.canceled:
-                            User.user.UserKeys.Remove(key);
+                        txtMsg.text = "Liberando chave...";
+                        User.user.UserKeys[i].status = Utilities.Status.start_request.ToString();
+                        StartCoroutine(GetStartedKeyStatus(key, SStatus));
+                    }
+                    else if(SStatus == Utilities.Status.end_request.ToString())
+                    {
+                        txtMsg.text = "Devolvendo chave...";
+                        User.user.UserKeys[i].status = Utilities.Status.end_request.ToString();
+                        StartCoroutine(GetEndedKeyStatus(key, SStatus));
+                    }
+                    else if(SStatus == Utilities.Status.canceled.ToString())
+                    {
+                        User.user.UserKeys.Remove(key);
 
-                            Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Pedido cancelado com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
-                            break;
+                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Pedido cancelado com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:SStatus, _Key:key);
                     }
                     break;
                 default:
@@ -115,7 +104,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         }
     }
 
-    private IEnumerator GetStartedKeyStatus(Key key, int IStatus)
+    private IEnumerator GetStartedKeyStatus(Key key, string SStatus)
     {
         UnityWebRequest requestGetKeyStatus = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestGetURL + "?id=" + key.requestId.ToString() + "&token=" + User.user.UserToken);
         yield return requestGetKeyStatus.SendWebRequest();
@@ -134,14 +123,14 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     if(jsonRequestGetStarted.request.status == "started")
                     {
                         int i = User.user.UserKeys.IndexOf(key);
-                        User.user.UserKeys[i].status = (int)Utilities.Status.started;
+                        User.user.UserKeys[i].status = Utilities.Status.started.ToString();
 
-                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave liberada com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
+                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave " + key.requestId.ToString() + " liberada com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:SStatus, _Key:key);
                     }
                     else
                     {
                         yield return new WaitForSeconds(5);
-                        StartCoroutine(GetStartedKeyStatus(key, IStatus));
+                        StartCoroutine(GetStartedKeyStatus(key, SStatus));
                     }
                     break;
                 default:
@@ -151,7 +140,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         }
     }
 
-    private IEnumerator GetEndedKeyStatus(Key key, int IStatus)
+    private IEnumerator GetEndedKeyStatus(Key key, string SStatus)
     {
         UnityWebRequest requestGetKeyStatus = UnityWebRequest.Get(Utilities.apiURL + Utilities.requestGetURL + "?id=" + key.requestId.ToString() + "&token=" + User.user.UserToken);
         yield return requestGetKeyStatus.SendWebRequest();
@@ -171,12 +160,12 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     {
                         User.user.UserKeys.Remove(key);
 
-                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave devolvida com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:IStatus, _Key:key);
+                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave " + key.requestId.ToString() + " devolvida com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:SStatus, _Key:key);
                     }
                     else
                     {
                         yield return new WaitForSeconds(5);
-                        StartCoroutine(GetEndedKeyStatus(key, IStatus));
+                        StartCoroutine(GetEndedKeyStatus(key, SStatus));
                     }
                     break;
                 default:

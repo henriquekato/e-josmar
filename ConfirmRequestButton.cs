@@ -65,7 +65,7 @@ public class ConfirmRequestButton : MonoBehaviour
                     Utilities.EndRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Erro ao criar o pedido", panelMsg);
                     break;
                 case "request_created":
-                    User.user.UserKeys.Add(new Key(Utilities.currentKey, jsonRequestCreate.id, SDateDay + " " + STimeStart, SDateDay + " " + STimeEnd, (int)Utilities.Status.not_started));
+                    User.user.UserKeys.Add(new Key(Utilities.currentKey, jsonRequestCreate.id, SDateDay + " " + STimeStart, SDateDay + " " + STimeEnd, Utilities.Status.not_started.ToString()));
 
                     dpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + jsonRequestCreate.id.ToString()));
                     dpdRequestsList.RefreshShownValue();
