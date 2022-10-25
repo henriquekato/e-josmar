@@ -24,6 +24,19 @@ public class Utilities
         canceled = 6
     }
 
+    public enum Rooms
+    {
+        sala1 = 1,
+        sala2 = 2,
+        lab3 = 3,
+        lab4 = 4
+    }
+
+    public static int currentKey;
+    public static string currentTimeStart;
+    public static string currentTimeEnd;
+    public static string currentDateDay;
+
     public static void StartRequest(Button[] Buttons, Text TxtMsg, string Msg, GameObject PanelMsg = null)
     {
         if(!(PanelMsg is null)) 
