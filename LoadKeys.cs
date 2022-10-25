@@ -2,18 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
 
 public class LoadKeys : MonoBehaviour
 {
+    public InputField inputurl;                                     //erro
+
     private RequestListJson jsonLoadUserKeys;
 
-    private void Start()
+    public void Comecar()
     {
+        Utilities.apiURL = "https://80-mocno-serverjosmar-" + inputurl.text + ".gitpod.io";    //erro
+
         UserData userData = SaveSystem.LoadUser();
-        if(userData is null)
+        if(userData is null | userData.token == "")
         {
+            SaveSystem.SaveUser(new UserData(0, ""));
             SceneManager.LoadScene("scene-login");
             return;
         }
@@ -29,6 +35,9 @@ public class LoadKeys : MonoBehaviour
 
         if(requestLoadUserKeys.result == UnityWebRequest.Result.ConnectionError | requestLoadUserKeys.result == UnityWebRequest.Result.ProtocolError)
         {
+            User.user.UserId = 0;
+            User.user.UserToken = "";
+            SaveSystem.SaveUser(new UserData(User.user.UserId, User.user.UserToken));
             SceneManager.LoadScene("scene-login");
         }
         else
@@ -48,6 +57,9 @@ public class LoadKeys : MonoBehaviour
             }
             else
             {
+                User.user.UserId = 0;
+                User.user.UserToken = "";
+                SaveSystem.SaveUser(new UserData(User.user.UserId, User.user.UserToken));
                 SceneManager.LoadScene("scene-login");
             }
         }

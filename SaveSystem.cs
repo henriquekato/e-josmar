@@ -1,9 +1,8 @@
+using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class SaveSystem : MonoBehaviour
+public static class SaveSystem
 {
     public static void SaveUser(UserData userData)
     {
@@ -21,6 +20,7 @@ public class SaveSystem : MonoBehaviour
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
+            stream.Position = 0;
             UserData data = formatter.Deserialize(stream) as UserData;
             stream.Close();
             return data;

@@ -8,8 +8,6 @@ using UnityEngine.Networking;
 
 public class AuthButton : MonoBehaviour
 {
-    public InputField inputurl;                                     //erro
-
     [SerializeField] InputField inputUser;
     [SerializeField] InputField inputPassword;
     [SerializeField] Button btnLogin;
@@ -21,8 +19,6 @@ public class AuthButton : MonoBehaviour
 
     public void Auth()
     {
-        Utilities.apiURL = "https://80-mocno-serverjosmar-" + inputurl.text + ".gitpod.io";    //erro
-
         Utilities.StartRequest(new Button[] {btnLogin}, txtMsg, "Carregando...", panelMsg);
         StartCoroutine(GetAuth());
     }

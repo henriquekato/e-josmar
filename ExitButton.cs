@@ -8,6 +8,7 @@ public class ExitButton : MonoBehaviour
         User.user.UserId = 0;
         User.user.UserToken = "";
         User.user.UserKeys.Clear();
+        SaveSystem.SaveUser(new UserData(User.user.UserId, User.user.UserToken));
         SceneManager.LoadScene("scene-login");
     }
 }
