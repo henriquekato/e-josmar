@@ -13,7 +13,6 @@ public class OpenAllRequestsButton : MonoBehaviour
     public void OpenAllRequests()
     {
         Utilities.UpdateDropdownAllRequests(dpdRequestsList);
-        dpdRequestsList.Show();
         panelCover.SetActive(true);
         panelAllRequests.SetActive(true);
     }
