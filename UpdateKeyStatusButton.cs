@@ -80,13 +80,13 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     int i = User.user.UserKeys.IndexOf(key);
                     if(SStatus == Utilities.Status.start_request.ToString())
                     {
-                        txtMsg.text = "Liberando chave...";
+                        txtMsg.text = "Liberando chave " + key.roomNumber.ToString() + "...";
                         User.user.UserKeys[i].status = Utilities.Status.start_request.ToString();
                         StartCoroutine(GetStartedKeyStatus(key, SStatus));
                     }
                     else if(SStatus == Utilities.Status.end_request.ToString())
                     {
-                        txtMsg.text = "Devolvendo chave...";
+                        txtMsg.text = "Devolvendo chave " + key.roomNumber.ToString() + "...";
                         User.user.UserKeys[i].status = Utilities.Status.end_request.ToString();
                         StartCoroutine(GetEndedKeyStatus(key, SStatus));
                     }
@@ -96,6 +96,9 @@ public class UpdateKeyStatusButton : MonoBehaviour
 
                         Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Pedido cancelado com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:SStatus, _Key:key);
                     }
+                    break;
+                case "api_invalid_token":
+                    ExitButton.Exit();
                     break;
                 default:
                     Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestUpdate.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
@@ -125,13 +128,16 @@ public class UpdateKeyStatusButton : MonoBehaviour
                         int i = User.user.UserKeys.IndexOf(key);
                         User.user.UserKeys[i].status = Utilities.Status.started.ToString();
 
-                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave " + key.requestId.ToString() + " liberada com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:SStatus, _Key:key);
+                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave " + key.roomNumber.ToString() + " liberada com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:SStatus, _Key:key);
                     }
                     else
                     {
                         yield return new WaitForSeconds(5);
                         StartCoroutine(GetStartedKeyStatus(key, SStatus));
                     }
+                    break;
+                case "api_invalid_token":
+                    ExitButton.Exit();
                     break;
                 default:
                     Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestGetStarted.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
@@ -160,13 +166,16 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     {
                         User.user.UserKeys.Remove(key);
 
-                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave " + key.requestId.ToString() + " devolvida com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:SStatus, _Key:key);
+                        Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Chave " + key.roomNumber.ToString() + " devolvida com sucesso", TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, Success:true, Status:SStatus, _Key:key);
                     }
                     else
                     {
                         yield return new WaitForSeconds(5);
                         StartCoroutine(GetEndedKeyStatus(key, SStatus));
                     }
+                    break;
+                case "api_invalid_token":
+                    ExitButton.Exit();
                     break;
                 default:
                     Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestGetEnded.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);

@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class ExitButton : MonoBehaviour
 {
-    public void Exit()
+    public static void Exit()
     {
         User.user.UserId = 0;
         User.user.UserToken = "";

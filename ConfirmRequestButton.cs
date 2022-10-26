@@ -74,6 +74,9 @@ public class ConfirmRequestButton : MonoBehaviour
 
                     Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
                     break;
+                case "api_invalid_token":
+                    ExitButton.Exit();
+                    break;
                 default:
                     Utilities.EndRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Erro inesperado: " + jsonRequestCreate.code, panelMsg);
                     break;

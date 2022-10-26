@@ -70,6 +70,9 @@ public class EditUserButton : MonoBehaviour
                     Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Usuário editado com sucesso", panelMsg, true);
                     Utilities.ClearFields(InputFields:new InputField[] {inputUsername, inputEmail, inputPassword});
                     break;
+                case "api_invalid_token":
+                    ExitButton.Exit();
+                    break;
                 default:
                     Utilities.EndRequest(new Button[] {btnEdit}, txtMsg, "Erro inesperado: " + jsonEditUser.code, panelMsg);
                     break;

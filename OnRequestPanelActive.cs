@@ -42,20 +42,24 @@ public class OnRequestPanelActive : MonoBehaviour
         {
             jsonRequestList = JsonUtility.FromJson<RequestListJson>(requestRequestList.downloadHandler.text);
 
-            if(jsonRequestList.code == "request_list")
+            switch(jsonRequestList.code)
             {
-                if(jsonRequestList.count > 0)
-                {
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Sala ocupada por: " + jsonRequestList.list[0].user_name + ", até " + jsonRequestList.list[0].date_expected_end.Substring(11));
-                }
-                else
-                {
-                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Sala desocupada");
-                }
-            }
-            else
-            {
-                Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Erro inesperado: " + jsonRequestList.code);
+                case "request_list":
+                    if(jsonRequestList.count > 0)
+                    {
+                        Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Sala ocupada por: " + jsonRequestList.list[0].user_name + ", até " + jsonRequestList.list[0].date_expected_end.Substring(11));
+                    }
+                    else
+                    {
+                        Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Sala desocupada");
+                    }
+                    break;
+                case "api_invalid_token":
+                    ExitButton.Exit();
+                    break;
+                default:
+                    Utilities.EndRequest(new Button[] {btnRequestKey}, txtHolder, "Erro inesperado: " + jsonRequestList.code);
+                    break;
             }
         }
     }
