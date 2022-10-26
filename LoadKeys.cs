@@ -35,10 +35,7 @@ public class LoadKeys : MonoBehaviour
 
         if(requestLoadUserKeys.result == UnityWebRequest.Result.ConnectionError | requestLoadUserKeys.result == UnityWebRequest.Result.ProtocolError)
         {
-            User.user.UserId = 0;
-            User.user.UserToken = "";
-            SaveSystem.SaveUser(new UserData(User.user.UserId, User.user.UserToken));
-            SceneManager.LoadScene("scene-login");
+            ExitButton.Exit();
         }
         else
         {
@@ -57,10 +54,7 @@ public class LoadKeys : MonoBehaviour
             }
             else
             {
-                User.user.UserId = 0;
-                User.user.UserToken = "";
-                SaveSystem.SaveUser(new UserData(User.user.UserId, User.user.UserToken));
-                SceneManager.LoadScene("scene-login");
+                ExitButton.Exit();
             }
         }
     }
