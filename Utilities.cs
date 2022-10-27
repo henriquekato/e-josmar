@@ -32,10 +32,11 @@ public class Utilities
         lab4 = 4
     }
 
-    public static int currentKey;
+    public static int currentRoom;
     public static string currentTimeStart;
     public static string currentTimeEnd;
     public static string currentDateDay;
+    public static Key currentKey;
 
     public static void StartRequest(Button[] Buttons, Text TxtMsg, string Msg, GameObject PanelMsg = null)
     {

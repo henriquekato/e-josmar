@@ -27,6 +27,7 @@ public class OpenUpdatePanelDropdown : MonoBehaviour
         if(dpdRequestsList.interactable)
         {
             Key key = Utilities.WhichRequest(dpdRequestsList);
+            Utilities.currentKey = key;
 
             txtNextRoom.text = txtThisRoom.text;
             txtRequestId.text = "Pedido " + key.requestId.ToString();

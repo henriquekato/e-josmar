@@ -19,14 +19,14 @@ public class OnRequestPanelActive : MonoBehaviour
 
     void OnEnable()
     {
-        Utilities.UpdateDropdownRoomRequests(dpdRequestsList, Utilities.currentKey);
+        Utilities.UpdateDropdownRoomRequests(dpdRequestsList, Utilities.currentRoom);
         VerifyTime.UpdateDpdWeekDays(dpdWeekDay);
 
         Utilities.StartRequest(new Button[] {btnRequestKey}, txtHolder, "Carregando informações...");
 
         string sDateNow = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-        StartCoroutine(GetKeyStatus(Utilities.currentKey, sDateNow));
+        StartCoroutine(GetKeyStatus(Utilities.currentRoom, sDateNow));
     }
 
     private IEnumerator GetKeyStatus(int IKey, string SDateNow)

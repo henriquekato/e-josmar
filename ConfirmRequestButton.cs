@@ -32,7 +32,7 @@ public class ConfirmRequestButton : MonoBehaviour
     public void ConfirmRequest()
     {
         Utilities.StartRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Carregando...", panelMsg);
-        string sKey = Utilities.currentKey.ToString();
+        string sKey = Utilities.currentRoom.ToString();
         string sTimeStart = Utilities.currentTimeStart;
         string sTimeEnd = Utilities.currentTimeEnd;
         string sDateDay = Utilities.currentDateDay;
@@ -65,7 +65,7 @@ public class ConfirmRequestButton : MonoBehaviour
                     Utilities.EndRequest(new Button[] {btnConfirmRequest, btnCancelRequest, btnClose}, txtMsg, "Erro ao criar o pedido", panelMsg);
                     break;
                 case "request_created":
-                    User.user.UserKeys.Add(new Key(Utilities.currentKey, jsonRequestCreate.id, SDateDay + " " + STimeStart, SDateDay + " " + STimeEnd, Utilities.Status.not_started.ToString()));
+                    User.user.UserKeys.Add(new Key(Utilities.currentRoom, jsonRequestCreate.id, SDateDay + " " + STimeStart, SDateDay + " " + STimeEnd, Utilities.Status.not_started.ToString()));
 
                     dpdRequestsList.options.Add(new Dropdown.OptionData("Pedido " + jsonRequestCreate.id.ToString()));
                     dpdRequestsList.RefreshShownValue();

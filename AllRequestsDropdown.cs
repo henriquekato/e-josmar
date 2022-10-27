@@ -24,10 +24,11 @@ public class AllRequestsDropdown : MonoBehaviour
         if(dpdRequestsList.interactable)
         {
             Key key = Utilities.WhichRequest(dpdRequestsList);
+            Utilities.currentKey = key;
             
-            Utilities.currentKey = key.roomNumber;
+            Utilities.currentRoom = key.roomNumber;
 
-            string room = ((Utilities.Rooms)Utilities.currentKey).ToString().Substring(0, 1);
+            string room = ((Utilities.Rooms)Utilities.currentRoom).ToString().Substring(0, 1);
 
             txtNextRoom.text = room == "s" ? "Sala: " + key.roomNumber.ToString() : "Laboratório: " + key.roomNumber.ToString();
             txtRequestId.text = "Pedido " + key.requestId.ToString();

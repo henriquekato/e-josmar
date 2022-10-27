@@ -25,7 +25,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
     {
         Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey, btnClose}, txtMsg, "Carregando...", panelMsg);
 
-        Key key = Utilities.WhichRequest(dpdRequestsList);
+        Key key = Utilities.currentKey;
         
         if(VerifyTime.TimeOk(key))
         {
@@ -41,14 +41,14 @@ public class UpdateKeyStatusButton : MonoBehaviour
     public void UpdateKeyStatusToEnded()
     {
         Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey, btnClose}, txtMsg, "Carregando...", panelMsg);
-        Key key = Utilities.WhichRequest(dpdRequestsList);
+        Key key = Utilities.currentKey;
         StartCoroutine(PostUpdateKeyStatus(key, Utilities.Status.end_request.ToString()));
     }
 
     public void UpdateKeyStatusToCancel()
     {
         Utilities.StartRequest(new Button[] {btnReturn, btnStart, btnCancel, btnReturnKey, btnClose}, txtMsg, "Carregando...", panelMsg);
-        Key key = Utilities.WhichRequest(dpdRequestsList);
+        Key key = Utilities.currentKey;
         StartCoroutine(PostUpdateKeyStatus(key, Utilities.Status.canceled.ToString()));
     }
 
@@ -58,6 +58,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
         form.AddField("id", key.requestId.ToString());
         form.AddField("status", SStatus);
         form.AddField("token", User.user.UserToken);
+        Debug.Log("id: " + key.requestId + "/status: " + SStatus + "/token: " + User.user.UserToken);
         
         UnityWebRequest requestRequestUpdate = UnityWebRequest.Post(Utilities.apiURL + Utilities.requestUpdateStatusURL, form);
         requestRequestUpdate.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -101,7 +102,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     ExitButton.Exit();
                     break;
                 default:
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestUpdate.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestUpdate.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, _Key:key);
                     break;
             }
         }
@@ -140,7 +141,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     ExitButton.Exit();
                     break;
                 default:
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestGetStarted.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestGetStarted.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, _Key:key);
                     break;
             }
         }
@@ -178,7 +179,7 @@ public class UpdateKeyStatusButton : MonoBehaviour
                     ExitButton.Exit();
                     break;
                 default:
-                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestGetEnded.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true);
+                    Utilities.EndUpdateRequest(btnReturn, btnStart, btnCancel, btnReturnKey, btnClose, txtMsg, "Erro inesperado: " + jsonRequestGetEnded.code, TxtStatus:txtStatus, PanelMsg:panelMsg, Connection:true, _Key:key);
                     break;
             }
         }
