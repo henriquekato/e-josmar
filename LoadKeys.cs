@@ -8,13 +8,13 @@ using UnityEngine.Networking;
 
 public class LoadKeys : MonoBehaviour
 {
-    public InputField inputurl;                                     //erro
+    public InputField inputUrl;
 
     private RequestListJson jsonLoadUserKeys;
 
     public void Comecar()
     {
-        Utilities.apiURL = "https://80-mocno-serverjosmar-" + inputurl.text + ".gitpod.io";    //erro
+        Utilities.apiURL = inputUrl.text;
 
         UserData userData = SaveSystem.LoadUser();
         if(userData.token == "")
