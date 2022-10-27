@@ -17,9 +17,9 @@ public class LoadKeys : MonoBehaviour
         Utilities.apiURL = "https://80-mocno-serverjosmar-" + inputurl.text + ".gitpod.io";    //erro
 
         UserData userData = SaveSystem.LoadUser();
-        if(userData is null | userData.token == "")
+        if(userData.token == "")
         {
-            SaveSystem.SaveUser(new UserData(0, ""));
+            SaveSystem.SaveUser(userData);
             SceneManager.LoadScene("scene-login");
             return;
         }

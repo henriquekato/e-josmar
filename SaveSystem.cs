@@ -7,7 +7,7 @@ public static class SaveSystem
     public static void SaveUser(UserData userData)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/user.txt";
+        string path = Application.persistentDataPath + "/user.xt";
         FileStream stream = new FileStream(path, FileMode.Create);
         formatter.Serialize(stream, userData);
         stream.Close();
@@ -15,7 +15,7 @@ public static class SaveSystem
 
     public static UserData LoadUser()
     {
-        string path = Application.persistentDataPath + "/user.txt";
+        string path = Application.persistentDataPath + "/user.xt";
         if(File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -25,6 +25,6 @@ public static class SaveSystem
             stream.Close();
             return data;
         }
-        return null;
+        return new UserData(0, "");
     }
 }
