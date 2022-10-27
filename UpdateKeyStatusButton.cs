@@ -7,7 +7,6 @@ using UnityEngine.Networking;
 
 public class UpdateKeyStatusButton : MonoBehaviour
 {
-    [SerializeField] Dropdown dpdRequestsList;
     [SerializeField] Text txtStatus;
     [SerializeField] Button btnReturn;
     [SerializeField] Button btnStart;
