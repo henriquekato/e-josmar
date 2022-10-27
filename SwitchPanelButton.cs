@@ -17,12 +17,14 @@ public class SwitchPanelButton : MonoBehaviour
     [SerializeField] InputField inputEndHour;
     [SerializeField] InputField inputEndMin;
     [SerializeField] Dropdown dpdWeekDay;
+    [SerializeField] GameObject panelMsg;
+    [SerializeField] Text txtMsg;
 
     public void SwitchPanel()
     {
         txtNextRoom.text = txtThisRoom.text;
 
-        Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin});
+        Utilities.ClearFields(Dropdowns:new Dropdown[] {dpdStartTime, dpdEndTime, dpdWeekDay}, InputFields:new InputField[] {inputStartHour, inputStartMin, inputEndHour, inputEndMin}, TxtMsg:txtMsg, PanelMsg:panelMsg);
         
         panelUpdateRequest.SetActive(false);
         panelRequest.SetActive(true);
