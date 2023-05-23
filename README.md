@@ -19,8 +19,7 @@ Ele se comunica com a API [server-josmar](https://github.com/mocno/server-josmar
 ### Vizualização de uma sala específica
 - É possível fazer pedidos pelas salas, de acordo com a disponibilidade de horário
 
-<img src="imgs/situacao-sala.png" alt="Situação de uma sala específica" height="400"/>
-<img src="imgs/sala-ocupada.png" alt="Uma sala específica ocupada" height="400"/>
+<img src="imgs/situacao-sala.png" alt="Situação de uma sala específica" height="400"/><img src="imgs/sala-ocupada.png" alt="Uma sala específica ocupada" height="400"/>
 
 ---
 ### Situação de um pedido
